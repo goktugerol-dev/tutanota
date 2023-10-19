@@ -1,7 +1,7 @@
 import {create} from "../../common/utils/EntityUtils.js"
 import {TypeRef} from "@tutao/tutanota-utils"
 import {typeModels} from "./TypeModels.js"
-
+import {StringWrapper} from '../sys/TypeRefs.js'
 
 export const ApprovalMailTypeRef: TypeRef<ApprovalMail> = new TypeRef("monitor", "ApprovalMail")
 
@@ -35,6 +35,27 @@ export type CounterValue = {
 	counterId: Id;
 	value: NumberString;
 }
+export const ErrorReportDataTypeRef: TypeRef<ErrorReportData> = new TypeRef("monitor", "ErrorReportData")
+
+export function createErrorReportData(values?: Partial<ErrorReportData>): ErrorReportData {
+	return Object.assign(create(typeModels.ErrorReportData, ErrorReportDataTypeRef), values)
+}
+
+export type ErrorReportData = {
+	_type: TypeRef<ErrorReportData>;
+
+	_id: Id;
+	additionalInfo: string;
+	appVersion: string;
+	clientType: NumberString;
+	errorClass: string;
+	errorMessage: null | string;
+	stackTrace: string;
+	userId: null | string;
+	userMessage: null | string;
+
+	logs: StringWrapper[];
+}
 export const ReadCounterDataTypeRef: TypeRef<ReadCounterData> = new TypeRef("monitor", "ReadCounterData")
 
 export function createReadCounterData(values?: Partial<ReadCounterData>): ReadCounterData {
@@ -62,6 +83,19 @@ export type ReadCounterReturn = {
 	value: null | NumberString;
 
 	counterValues: CounterValue[];
+}
+export const ReportErrorInTypeRef: TypeRef<ReportErrorIn> = new TypeRef("monitor", "ReportErrorIn")
+
+export function createReportErrorIn(values?: Partial<ReportErrorIn>): ReportErrorIn {
+	return Object.assign(create(typeModels.ReportErrorIn, ReportErrorInTypeRef), values)
+}
+
+export type ReportErrorIn = {
+	_type: TypeRef<ReportErrorIn>;
+
+	_format: NumberString;
+
+	report: ErrorReportData;
 }
 export const WriteCounterDataTypeRef: TypeRef<WriteCounterData> = new TypeRef("monitor", "WriteCounterData")
 

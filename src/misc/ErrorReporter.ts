@@ -14,14 +14,18 @@ import { copyToClipboard } from "./ClipboardUtils"
 import { px } from "../gui/size"
 import { isApp, isDesktop, Mode } from "../api/common/Env"
 import { RecipientType } from "../api/common/recipients/Recipient.js"
-import { Attachment } from "../mail/editor/SendMailModel.js"
 import { createLogFile } from "../api/common/Logger.js"
 import { DataFile } from "../api/common/DataFile.js"
+import { ReportErrorService } from "../api/entities/monitor/Services.js"
+import { createErrorReportData, createReportErrorIn } from "../api/entities/monitor/TypeRefs.js"
+import { ErrorReportClientType } from "./ClientConstants.js"
+import { createStringWrapper } from "../api/entities/sys/TypeRefs.js"
+import { client } from "./ClientDetector.js"
 
 type FeedbackContent = {
 	message: string
 	subject: string
-	logs: Array<Attachment>
+	logs: Array<DataFile>
 }
 
 export async function promptForFeedbackAndSend(e: ErrorInfo): Promise<{ ignored: boolean }> {
@@ -36,7 +40,7 @@ export async function promptForFeedbackAndSend(e: ErrorInfo): Promise<{ ignored:
 		let userMessage = ""
 		let errorOkAction = (dialog: Dialog) => {
 			preparedContent.message = userMessage + "\n" + preparedContent.message
-			resolve(preparedContent)
+			resolve({ content: preparedContent, userMessage, ignore: ignoreChecked, sendLogs })
 			dialog.close()
 		}
 
@@ -124,12 +128,15 @@ export async function promptForFeedbackAndSend(e: ErrorInfo): Promise<{ ignored:
 				cancelAction: () => resolve(null),
 			})
 		}
-	}).then((content: FeedbackContent) => {
+	}).then((dialogResult: { content: FeedbackContent; userMessage: string } | null) => {
 		const ret = { ignored: ignoreChecked }
-		if (!content) return ret
-		if (sendLogs) content.logs = logs
-		else content.logs = []
-		sendFeedbackMail(content)
+		// it got cancelled
+		if (!dialogResult) return ret
+
+		dialogResult.content.logs = sendLogs ? logs : []
+
+		sendToServer(e, dialogResult.userMessage, sendLogs ? logs : [])
+		sendFeedbackMail(dialogResult.content)
 		return ret
 	})
 }
@@ -262,6 +269,55 @@ export async function sendFeedbackMail(content: FeedbackContent): Promise<void> 
 	)
 }
 
+async function sendToServer(error: ErrorInfo, userMessage: string | null, logs: DataFile[]) {
+	function getReportingClientType() {
+		let clientType
+		if (env.mode === Mode.Browser) {
+			return ErrorReportClientType.Browser
+		} else {
+			switch (env.platformId) {
+				case "ios":
+					clientType = ErrorReportClientType.Ios
+					break
+				case "android":
+					clientType = ErrorReportClientType.Android
+					break
+				case "darwin":
+					clientType = ErrorReportClientType.MacOS
+					break
+				case "linux":
+					clientType = ErrorReportClientType.Linux
+					break
+				case "win32":
+					clientType = ErrorReportClientType.Windows
+					break
+				default:
+					return ErrorReportClientType.Linux
+			}
+		}
+	}
+
+	const clientType = getReportingClientType()
+
+	const errorData = createReportErrorIn({
+		report: createErrorReportData({
+			clientType,
+			appVersion: env.versionNumber,
+			userId: locator.logins.getUserController().userId,
+			errorClass: error.name ?? "?",
+			errorMessage: error.message,
+			userMessage: userMessage,
+			stackTrace: error.stack ?? "",
+			logs: logs.map((log) => {
+				const stringData = uint8ArrayToString("utf-8", log.data)
+				return createStringWrapper({ value: stringData })
+			}),
+			additionalInfo: client.userAgent,
+		}),
+	})
+	await locator.serviceExecutor.post(ReportErrorService, errorData)
+}
+
 function prepareFeedbackContent(error: ErrorInfo, loggedIn: boolean): FeedbackContent {
 	const timestamp = new Date()
 	let { message, client, type } = clientInfoString(timestamp, loggedIn)
@@ -312,8 +368,8 @@ export function clientInfoString(
 	}
 }
 
-export async function getLogAttachments(timestamp?: Date): Promise<Array<Attachment>> {
-	const logs: Array<Attachment> = []
+export async function getLogAttachments(timestamp?: Date): Promise<Array<DataFile>> {
+	const logs: Array<DataFile> = []
 	const global = downcast<Window>(window)
 
 	if (global.logger) {
