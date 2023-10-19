@@ -29,7 +29,8 @@
 		"lint:check": "eslint .",
 		"lint:fix": "eslint --fix .",
 		"check": "npm run style:check && npm run lint:check",
-		"fix": "npm run style:fix && npm run lint:fix"
+		"fix": "npm run style:fix && npm run lint:fix",
+		"sort-reports": "cd sort-reports && npx ts-node --esm sort-the-court.ts"
 	},
 	"dependencies": {
 		"@tutao/oxmsg": "0.0.9-beta.0",
