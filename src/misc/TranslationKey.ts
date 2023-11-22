@@ -1591,3 +1591,6 @@ export type TranslationKeyType =
 	| "yourMessage_label"
 	| "you_label"
 	| "emptyString_msg"
+	| "addAccount_action"
+	| "removeAccount_action"
+	| "switchAccount_action"

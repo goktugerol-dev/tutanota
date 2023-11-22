@@ -1605,6 +1605,10 @@ export default {
 		"yourCalendars_label": "Your calendars",
 		"yourFolders_action": "YOUR FOLDERS",
 		"yourMessage_label": "Your message",
-		"you_label": "You"
+		"you_label": "You",
+		// FIXME add to phrase
+		"addAccount_action": "Add account",
+		"removeAccount_action": "Remove account",
+		"switchAccount_action": "Switch account"
 	}
 }
