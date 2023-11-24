@@ -4,11 +4,12 @@ import { locator } from "../../api/main/MainLocator.js"
 import { showProgressDialog } from "../../gui/dialogs/ProgressDialog.js"
 import { lang } from "../../misc/LanguageViewModel.js"
 import m from "mithril"
-import { getEtId } from "../../api/common/utils/EntityUtils.js"
 import { NotAuthenticatedError } from "../../api/common/error/RestError.js"
 import { PasswordForm, PasswordModel } from "../PasswordForm.js"
 import { ofClass } from "@tutao/tutanota-utils"
 import { asKdfType } from "../../api/common/TutanotaConstants.js"
+import { CancelledError } from "../../api/common/error/CancelledError.js"
+import { CredentialAuthenticationError } from "../../api/common/error/CredentialAuthenticationError.js"
 
 /**
  *The admin does not have to enter the old password in addition to the new password (twice). The password strength is not enforced.
@@ -38,6 +39,22 @@ export async function showChangeUserPasswordAsAdminDialog(user: User) {
 	})
 }
 
+async function storeNewPassword(encryptedPassword: string) {
+	try {
+		const storedCredentials = await locator.credentialsProvider.getCredentialsByUserId(locator.logins.getUserController().userId)
+		if (storedCredentials != null) {
+			storedCredentials.credentials.encryptedPassword = encryptedPassword
+			await locator.credentialsProvider.store(storedCredentials)
+		}
+	} catch (e) {
+		if (e instanceof CancelledError || e instanceof CredentialAuthenticationError) {
+			// FIXME
+			const retry = await Dialog.confirm(() => "Could not store new password, try again?")
+			if (retry) storeNewPassword(encryptedPassword)
+		}
+	}
+}
+
 /**
  * The user must enter the old password in addition to the new password (twice). The password strength is enforced.
  */
@@ -53,8 +70,9 @@ export async function showChangeOwnPasswordDialog(allowCancel: boolean = true) {
 			const currentKdfType = asKdfType(locator.logins.getUserController().user.kdfVersion)
 			const newKdfType = await locator.kdfPicker.pickKdfType(currentKdfType)
 			showProgressDialog("pleaseWait_msg", locator.loginFacade.changePassword(model.getOldPassword(), model.getNewPassword(), currentKdfType, newKdfType))
-				.then(() => {
-					locator.credentialsProvider.deleteByUserId(getEtId(locator.logins.getUserController().user))
+				.then(async ({ encryptedPassword }) => {
+					storeNewPassword(encryptedPassword)
+
 					Dialog.message("pwChangeValid_msg")
 					dialog.close()
 				})

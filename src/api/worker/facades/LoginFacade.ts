@@ -783,7 +783,7 @@ export class LoginFacade {
 		})
 	}
 
-	async changePassword(currentPassword: string, newPassword: string, currentKdfType: KdfType, newKdfType: KdfType): Promise<void> {
+	async changePassword(currentPassword: string, newPassword: string, currentKdfType: KdfType, newKdfType: KdfType): Promise<{ encryptedPassword: string }> {
 		const currentSalt = assertNotNull(this.userFacade.getLoggedInUser().salt)
 		const currentUserPassphraseKey = await this.deriveUserPassphraseKey(currentKdfType, currentPassword, currentSalt)
 		const currentAuthVerifier = createAuthVerifier(currentUserPassphraseKey)
@@ -800,6 +800,9 @@ export class LoginFacade {
 		service.verifier = authVerifier
 		service.pwEncUserGroupKey = pwEncUserGroupKey
 		await this.serviceExecutor.post(ChangePasswordService, service)
+		const accessToken = assertNotNull(this.userFacade.getAccessToken())
+		const sessionData = await this.loadSessionData(accessToken)
+		return { encryptedPassword: uint8ArrayToBase64(encryptString(sessionData.accessKey, newPassword)) }
 	}
 
 	async deleteAccount(password: string, reason: string, takeover: string): Promise<void> {

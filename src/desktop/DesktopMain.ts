@@ -172,6 +172,7 @@ async function createComponents(): Promise<Components> {
 			try {
 				await db.openDb(userId, key)
 			} catch (e) {
+				console.log("failed to open db for", userId, e)
 				if (!retry) throw e
 				console.log("retrying")
 				await this.delete(userId)
