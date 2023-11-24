@@ -37,7 +37,7 @@ import {
 	CustomerTypeRef,
 	UserTypeRef,
 } from "../../../src/api/entities/sys/TypeRefs.js"
-import { ConversationType, GroupType, KdfType, MailMethod, OperationType } from "../../../src/api/common/TutanotaConstants.js"
+import { ConversationType, GroupType, MailMethod, OperationType } from "../../../src/api/common/TutanotaConstants.js"
 import { lang, TranslationKey } from "../../../src/misc/LanguageViewModel.js"
 import { EventController } from "../../../src/api/main/EventController.js"
 import { UserError } from "../../../src/api/main/UserError.js"
@@ -52,7 +52,6 @@ import { ResolvableRecipientMock } from "./ResolvableRecipientMock.js"
 import { NoZoneDateProvider } from "../../../src/api/common/utils/NoZoneDateProvider.js"
 import { MailWrapper } from "../../../src/api/common/MailWrapper.js"
 import { FolderSystem } from "../../../src/api/common/mail/FolderSystem.js"
-import { KdfPicker } from "../../../src/misc/KdfPicker.js"
 import { ConfigurationDatabase } from "../../../src/api/worker/facades/lazy/ConfigurationDatabase.js"
 
 const { anything, argThat } = matchers
@@ -100,7 +99,7 @@ o.spec("SendMailModel", function () {
 		lang.init(en)
 	})
 
-	let mailModel: MailModel, entity: EntityClient, mailFacade: MailFacade, recipientsModel: RecipientsModel, kdfPicker: KdfPicker
+	let mailModel: MailModel, entity: EntityClient, mailFacade: MailFacade, recipientsModel: RecipientsModel
 
 	let model: SendMailModel
 
@@ -115,8 +114,6 @@ o.spec("SendMailModel", function () {
 		when(entity.load(anything(), anything(), anything())).thenDo((typeRef, id, params) => ({ _type: typeRef, _id: id }))
 
 		mailModel = instance(MailModel)
-		kdfPicker = instance(KdfPicker)
-		when(kdfPicker.pickKdfType()).thenResolve(KdfType.Argon2id)
 
 		const contactModel = object<ContactModel>()
 		when(contactModel.getContactListId()).thenResolve("contactListId")
@@ -195,7 +192,6 @@ o.spec("SendMailModel", function () {
 			recipientsModel,
 			new NoZoneDateProvider(),
 			mailboxProperties,
-			kdfPicker,
 			configFacade,
 		)
 
@@ -412,7 +408,7 @@ o.spec("SendMailModel", function () {
 			const e = await assertThrows(UserError, () => model.send(method, getConfirmation))
 			o(e?.message).equals(lang.get("noRecipients_msg"))
 			verify(getConfirmation(), { times: 0 })
-			verify(mailFacade.sendDraft(anything(), anything(), anything(), anything()), { times: 0 })
+			verify(mailFacade.sendDraft(anything(), anything(), anything()), { times: 0 })
 			verify(mailFacade.createDraft(anything()), { times: 0 })
 			verify(mailFacade.updateDraft(anything()), { times: 0 })
 		})
@@ -428,7 +424,7 @@ o.spec("SendMailModel", function () {
 			const r = await model.send(method, getConfirmation)
 			o(r).equals(false)
 			verify(getConfirmation(), { times: 0 })
-			verify(mailFacade.sendDraft(anything(), anything(), anything(), anything()), { times: 0 })
+			verify(mailFacade.sendDraft(anything(), anything(), anything()), { times: 0 })
 			verify(mailFacade.createDraft(anything()), { times: 0 })
 			verify(mailFacade.updateDraft(anything()), { times: 0 })
 		})
@@ -447,7 +443,7 @@ o.spec("SendMailModel", function () {
 			const e = await assertThrows(UserError, () => model.send(method, getConfirmation))
 			o(e?.message).equals(lang.get("noPreSharedPassword_msg"))
 
-			verify(mailFacade.sendDraft(anything(), anything(), anything(), anything()), { times: 0 })
+			verify(mailFacade.sendDraft(anything(), anything(), anything()), { times: 0 })
 			verify(mailFacade.createDraft(anything()), { times: 0 })
 			verify(mailFacade.updateDraft(anything()), { times: 0 })
 		})
@@ -466,7 +462,7 @@ o.spec("SendMailModel", function () {
 			when(getConfirmation(anything())).thenResolve(false)
 			const r = await model.send(method, getConfirmation)
 			o(r).equals(false)
-			verify(mailFacade.sendDraft(anything(), anything(), anything(), anything()), { times: 0 })
+			verify(mailFacade.sendDraft(anything(), anything(), anything()), { times: 0 })
 			verify(mailFacade.createDraft(anything()), { times: 0 })
 			verify(mailFacade.updateDraft(anything()), { times: 0 })
 		})
@@ -487,8 +483,7 @@ o.spec("SendMailModel", function () {
 			const r = await model.send(method, getConfirmation)
 			o(r).equals(true)
 
-			verify(kdfPicker.pickKdfType(), { times: 1 })
-			verify(mailFacade.sendDraft(anything(), anything(), anything(), anything()), { times: 1 })
+			verify(mailFacade.sendDraft(anything(), anything(), anything()), { times: 1 })
 			verify(mailFacade.createDraft(anything()), { times: 1 })
 			verify(mailFacade.updateDraft(anything()), { times: 0 })
 
@@ -523,8 +518,7 @@ o.spec("SendMailModel", function () {
 
 			verify(getConfirmation(anything), { times: 0 })
 
-			verify(kdfPicker.pickKdfType(), { times: 1 })
-			verify(mailFacade.sendDraft(anything(), anything(), anything(), anything()), { times: 1 })
+			verify(mailFacade.sendDraft(anything(), anything(), anything()), { times: 1 })
 			verify(mailFacade.createDraft(anything()), { times: 1 })
 			verify(mailFacade.updateDraft(anything()), { times: 0 })
 

@@ -1,8 +1,7 @@
 import o from "@tutao/otest"
-import { bitArrayToUint8Array, generateRandomSalt, uint8ArrayToBitArray } from "../lib/index.js"
+import { Aes256Key, bitArrayToUint8Array, generateRandomSalt, uint8ArrayToBitArray } from "../lib/index.js"
 import { generateKeyFromPassphrase } from "../lib/hashes/Argon2id/Argon2id.js"
 import { Hex, hexToUint8Array, uint8ArrayToHex } from "@tutao/tutanota-utils"
-import { Aes256Key } from "../lib/encryption/Aes.js"
 
 async function loadArgon2ModuleFromFile(path: string): Promise<WebAssembly.Exports> {
 	if (typeof process !== "undefined") {
