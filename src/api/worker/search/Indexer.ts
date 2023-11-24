@@ -183,6 +183,9 @@ export class Indexer {
 			if (!userEncDbKey) {
 				// database was opened for the first time - create new tables
 				await this._createIndexTables(user, userGroupKey)
+				if (cacheInfo?.isPersistent) {
+					await this._mail.enableMailIndexing(user)
+				}
 			} else {
 				await this._loadIndexTables(transaction, user, userGroupKey, userEncDbKey)
 			}
