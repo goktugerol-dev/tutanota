@@ -41,7 +41,6 @@ import { WebauthnClient } from "../../misc/2fa/webauthn/WebauthnClient"
 import type { UserManagementFacade } from "../worker/facades/lazy/UserManagementFacade.js"
 import type { GroupManagementFacade } from "../worker/facades/lazy/GroupManagementFacade.js"
 import { WorkerRandomizer } from "../worker/WorkerImpl"
-import { exposeRemote } from "../common/WorkerProxy"
 import { ExposedNativeInterface } from "../../native/common/NativeInterface"
 import { BrowserWebauthn } from "../../misc/2fa/webauthn/BrowserWebauthn.js"
 import { UsageTestController } from "@tutao/tutanota-usagetests"
@@ -491,19 +490,7 @@ class MainLocator {
 	}
 
 	credentialsRemovalHandler(): CredentialRemovalHandler {
-		return new CredentialRemovalHandler(this.indexerFacade)
-	}
-
-	private getExposedNativeInterface(): ExposedNativeInterface {
-		if (isBrowser()) {
-			throw new ProgrammingError("Tried to access native interfaces in browser")
-		}
-
-		if (this.exposedNativeInterfaces == null) {
-			this.exposedNativeInterfaces = exposeRemote<ExposedNativeInterface>((msg) => this.native.invokeNative(msg.requestType, msg.args))
-		}
-
-		return this.exposedNativeInterfaces
+		return new CredentialRemovalHandler(this.indexerFacade, this.pushService)
 	}
 
 	private getNativeInterface<T extends keyof NativeInterfaces>(name: T): NativeInterfaces[T] {

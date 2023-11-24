@@ -236,7 +236,7 @@ export class LoginViewModel implements ILoginViewModel {
 		if (credentials) {
 			await this.loginController.deleteOldSession(credentials.credentials)
 			await this.credentialsProvider.deleteByUserId(credentials.credentials.userId)
-			await this.credentialRemovalHandler.onCredentialsRemoved(credentials.credentials.userId)
+			await this.credentialRemovalHandler.onCredentialsRemoved(credentials)
 			await this._updateCachedCredentials()
 		}
 	}
