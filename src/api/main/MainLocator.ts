@@ -97,7 +97,8 @@ import { Router, ScopedRouter, ThrottledRouter } from "../../gui/ScopedRouter.js
 import { ShareableGroupType } from "../../sharing/GroupUtils.js"
 import { KdfPicker } from "../../misc/KdfPicker.js"
 import { DomainConfigProvider } from "../common/DomainConfigProvider.js"
-import { CredentialRemovalHandler } from "../../login/CredentialRemovalHandler.js"
+import type { AppsCredentialRemovalHandler, CredentialRemovalHandler, NoopCredentialRemovalHandler } from "../../login/CredentialRemovalHandler.js"
+import { LoginViewModel } from "../../login/LoginViewModel.js"
 
 assertMainOrNode()
 
@@ -489,8 +490,29 @@ class MainLocator {
 		return new DomainConfigProvider()
 	}
 
-	credentialsRemovalHandler(): CredentialRemovalHandler {
-		return new CredentialRemovalHandler(this.indexerFacade, this.pushService)
+	async credentialsRemovalHandler(): Promise<CredentialRemovalHandler> {
+		const { NoopCredentialRemovalHandler, AppsCredentialRemovalHandler } = await import("../../login/CredentialRemovalHandler.js")
+		return isBrowser() ? new NoopCredentialRemovalHandler() : new AppsCredentialRemovalHandler(this.indexerFacade, this.pushService)
+	}
+
+	async loginViewModelFactory(): Promise<lazy<LoginViewModel>> {
+		const { LoginViewModel } = await import("../../login/LoginViewModel.js")
+		const credentialsRemovalHandler = await locator.credentialsRemovalHandler()
+		return () => {
+			const domainConfig = isBrowser()
+				? locator.domainConfigProvider().getDomainConfigForHostname(location.hostname, location.protocol, location.port)
+				: // in this case, we know that we have a staticUrl set that we need to use
+				  locator.domainConfigProvider().getCurrentDomainConfig()
+			return new LoginViewModel(
+				locator.logins,
+				locator.credentialsProvider,
+				locator.secondFactorHandler,
+				deviceConfig,
+				domainConfig,
+				credentialsRemovalHandler,
+				isBrowser() ? null : this.pushService,
+			)
+		}
 	}
 
 	private getNativeInterface<T extends keyof NativeInterfaces>(name: T): NativeInterfaces[T] {

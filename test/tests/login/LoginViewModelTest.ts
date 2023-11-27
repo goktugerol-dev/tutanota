@@ -18,6 +18,7 @@ import { ResumeSessionErrorReason } from "../../../src/api/worker/facades/LoginF
 import { Mode } from "../../../src/api/common/Env.js"
 import { domainConfigStub } from "../TestUtils.js"
 import { CredentialRemovalHandler } from "../../../src/login/CredentialRemovalHandler.js"
+import { NativePushServiceApp } from "../../../src/native/main/NativePushServiceApp.js"
 
 const { anything } = matchers
 
@@ -111,6 +112,7 @@ o.spec("LoginViewModelTest", () => {
 	let databaseKeyFactory: DatabaseKeyFactory
 	let deviceConfigMock: DeviceConfig
 	let credentialRemovalHandler: CredentialRemovalHandler
+	let pushServiceApp: NativePushServiceApp
 
 	o.beforeEach(async () => {
 		loginControllerMock = object<LoginController>()
@@ -135,6 +137,8 @@ o.spec("LoginViewModelTest", () => {
 		deviceConfigMock = instance(DeviceConfig)
 
 		credentialRemovalHandler = object()
+
+		pushServiceApp = object()
 	})
 
 	/**
@@ -149,6 +153,7 @@ o.spec("LoginViewModelTest", () => {
 			deviceConfigMock,
 			domainConfigStub,
 			credentialRemovalHandler,
+			pushServiceApp,
 		)
 		await viewModel.init()
 		return viewModel
@@ -233,6 +238,19 @@ o.spec("LoginViewModelTest", () => {
 			o(viewModel.displayMode as DisplayMode).equals(DisplayMode.Form)
 			o(viewModel.getSavedCredentials()).deepEquals([])
 			verify(credentialsProviderMock.clearCredentials(anything()), { times: 1 })
+		})
+		o("Deletes push identifier", async function () {
+			const viewModel = await getViewModel()
+			viewModel.displayMode = DisplayMode.DeleteCredentials
+			const pushIdentifier = "iAmPushIdentifier"
+			const credentialsAndKey = { credentials: testCredentials, databaseKey: null }
+			await credentialsProviderMock.store(credentialsAndKey)
+			when(pushServiceApp.loadPushIdentifierFromNative()).thenResolve(pushIdentifier)
+
+			await viewModel.deleteCredentials(encryptedTestCredentials.credentialInfo)
+
+			verify(credentialRemovalHandler.onCredentialsRemoved(credentialsAndKey))
+			verify(loginControllerMock.deleteOldSession(testCredentials, pushIdentifier))
 		})
 	})
 	o.spec("Login with stored credentials", function () {

@@ -95,7 +95,7 @@ export class NativePushServiceApp {
 		return this.nativePushFacade.removeUser(userId)
 	}
 
-	private loadPushIdentifierFromNative(): Promise<string | null> {
+	loadPushIdentifierFromNative(): Promise<string | null> {
 		return this.nativePushFacade.getPushIdentifier()
 	}
 
@@ -132,7 +132,7 @@ export class NativePushServiceApp {
 		await this.nativePushFacade.closePushNotifications(addresses)
 	}
 
-	getPushIdentifier(): string | null {
+	getLoadedPushIdentifier(): string | null {
 		return this._currentIdentifier
 	}
 

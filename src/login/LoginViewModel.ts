@@ -18,6 +18,7 @@ import { Const } from "../api/common/TutanotaConstants.js"
 import { getWhitelabelRegistrationDomains } from "./LoginView.js"
 import { CancelledError } from "../api/common/error/CancelledError.js"
 import { CredentialRemovalHandler } from "./CredentialRemovalHandler.js"
+import { NativePushServiceApp } from "../native/main/NativePushServiceApp.js"
 
 assertMainOrNode()
 
@@ -139,6 +140,7 @@ export class LoginViewModel implements ILoginViewModel {
 		private readonly deviceConfig: DeviceConfig,
 		private readonly domainConfig: DomainConfig,
 		private readonly credentialRemovalHandler: CredentialRemovalHandler,
+		private readonly pushServiceApp: NativePushServiceApp | null,
 	) {
 		this.state = LoginState.NotAuthenticated
 		this.displayMode = DisplayMode.Form
@@ -234,7 +236,7 @@ export class LoginViewModel implements ILoginViewModel {
 		}
 
 		if (credentials) {
-			await this.loginController.deleteOldSession(credentials.credentials)
+			await this.loginController.deleteOldSession(credentials.credentials, (await this.pushServiceApp?.loadPushIdentifierFromNative()) ?? null)
 			await this.credentialsProvider.deleteByUserId(credentials.credentials.userId)
 			await this.credentialRemovalHandler.onCredentialsRemoved(credentials)
 			await this._updateCachedCredentials()
@@ -350,6 +352,7 @@ export class LoginViewModel implements ILoginViewModel {
 			}
 		} catch (e) {
 			if (e instanceof NotAuthenticatedError && this._autoLoginCredentials) {
+				// FIXME either not delete here or do it right
 				await this.credentialsProvider.deleteByUserId(this._autoLoginCredentials.userId)
 				await this._updateCachedCredentials()
 				await this._onLoginFailed(e)
