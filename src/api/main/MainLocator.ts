@@ -492,7 +492,7 @@ class MainLocator {
 
 	async credentialsRemovalHandler(): Promise<CredentialRemovalHandler> {
 		const { NoopCredentialRemovalHandler, AppsCredentialRemovalHandler } = await import("../../login/CredentialRemovalHandler.js")
-		return isBrowser() ? new NoopCredentialRemovalHandler() : new AppsCredentialRemovalHandler(this.indexerFacade, this.pushService)
+		return isBrowser() ? new NoopCredentialRemovalHandler() : new AppsCredentialRemovalHandler(this.indexerFacade, this.pushService, this.configFacade)
 	}
 
 	async loginViewModelFactory(): Promise<lazy<LoginViewModel>> {

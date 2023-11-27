@@ -143,20 +143,16 @@ export class DbFacade {
 			}
 		}
 
-		return ensureDbIsClosed().then(() => {
-			return new Promise((resolve, reject) => {
-				let deleteRequest = self.indexedDB.deleteDatabase(id)
+		return ensureDbIsClosed()
+			.then(() => DbFacade.deleteDb(id))
+			.then(() => this._db.reset())
+	}
 
-				deleteRequest.onerror = (event: ErrorEvent) => {
-					reject(new DbError(`could not delete database ${id}`, downcast<Error>(event)))
-				}
-
-				deleteRequest.onsuccess = () => {
-					this._db.reset()
-
-					resolve()
-				}
-			})
+	static deleteDb(id: string): Promise<void> {
+		return new Promise((resolve, reject) => {
+			const deleteRequest = self.indexedDB.deleteDatabase(id)
+			deleteRequest.onerror = (event: ErrorEvent) => reject(new DbError(`could not delete database ${id}`, downcast<Error>(event)))
+			deleteRequest.onsuccess = () => resolve()
 		})
 	}
 
