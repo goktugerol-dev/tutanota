@@ -296,7 +296,8 @@ o.spec("LoginViewModelTest", () => {
 			o(viewModel.state).equals(LoginState.LoggedIn)
 		})
 		o("login should fail with invalid stored credentials", async function () {
-			await credentialsProviderMock.store({ credentials: testCredentials, databaseKey: null })
+			const credentialsAndKey = { credentials: testCredentials, databaseKey: null }
+			await credentialsProviderMock.store(credentialsAndKey)
 			when(loginControllerMock.resumeSession(anything(), null, offlineTimeRangeDays)).thenReject(new NotAuthenticatedError("test"))
 			const viewModel = await getViewModel()
 
@@ -306,6 +307,7 @@ o.spec("LoginViewModelTest", () => {
 			o(viewModel.state).equals(LoginState.InvalidCredentials)
 			o(viewModel.displayMode).equals(DisplayMode.Form)
 			verify(credentialsProviderMock.deleteByUserId(testCredentials.userId))
+			verify(credentialRemovalHandler.onCredentialsRemoved(credentialsAndKey))
 			o(viewModel.getSavedCredentials()).deepEquals([])
 			o(viewModel._autoLoginCredentials).equals(null)
 		})
