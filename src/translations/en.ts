@@ -1608,6 +1608,7 @@ export default {
 		"you_label": "You",
 		"addAccount_action": "Add account",
 		"removeAccount_action": "Remove account",
-		"switchAccount_action": "Switch account"
+		"switchAccount_action": "Switch account",
+		"couldNotStoreNewPassword_msg": "Could not store new password, try again?",
 	}
 }

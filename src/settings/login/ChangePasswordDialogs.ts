@@ -48,8 +48,7 @@ async function storeNewPassword(encryptedPassword: string) {
 		}
 	} catch (e) {
 		if (e instanceof CancelledError || e instanceof CredentialAuthenticationError) {
-			// FIXME
-			const retry = await Dialog.confirm(() => "Could not store new password, try again?")
+			const retry = await Dialog.confirm(() => e.message + "\n" + lang.get("couldNotStoreNewPassword_msg"))
 			if (retry) storeNewPassword(encryptedPassword)
 		}
 	}
