@@ -1612,7 +1612,6 @@ export default {
 		"you_label": "Du",
 		"addAccount_action": "Account hinzufügen",
 		"removeAccount_action": "Account entfernen",
-		"switchAccount_action": "Account wechseln",
-		"couldNotStoreNewPassword_msg": "Das Passwort konnte nicht gespeichert werden. Nochmal versuchen?",
+		"switchAccount_action": "Account wechseln"
 	}
 }

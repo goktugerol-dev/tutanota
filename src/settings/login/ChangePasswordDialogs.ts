@@ -8,8 +8,6 @@ import { NotAuthenticatedError } from "../../api/common/error/RestError.js"
 import { PasswordForm, PasswordModel } from "../PasswordForm.js"
 import { ofClass } from "@tutao/tutanota-utils"
 import { asKdfType } from "../../api/common/TutanotaConstants.js"
-import { CancelledError } from "../../api/common/error/CancelledError.js"
-import { CredentialAuthenticationError } from "../../api/common/error/CredentialAuthenticationError.js"
 
 /**
  *The admin does not have to enter the old password in addition to the new password (twice). The password strength is not enforced.
@@ -40,17 +38,9 @@ export async function showChangeUserPasswordAsAdminDialog(user: User) {
 }
 
 async function storeNewPassword(encryptedPassword: string) {
-	try {
-		const storedCredentials = await locator.credentialsProvider.getCredentialsByUserId(locator.logins.getUserController().userId)
-		if (storedCredentials != null) {
-			storedCredentials.credentials.encryptedPassword = encryptedPassword
-			await locator.credentialsProvider.store(storedCredentials)
-		}
-	} catch (e) {
-		if (e instanceof CancelledError || e instanceof CredentialAuthenticationError) {
-			const retry = await Dialog.confirm(() => e.message + "\n" + lang.get("couldNotStoreNewPassword_msg"))
-			if (retry) storeNewPassword(encryptedPassword)
-		}
+	const storedCredentials = await locator.credentialsProvider.getCredentialsInfoByUserId(locator.logins.getUserController().userId)
+	if (storedCredentials != null) {
+		await locator.credentialsProvider.replacePassword(storedCredentials, encryptedPassword)
 	}
 }
 
@@ -69,11 +59,12 @@ export async function showChangeOwnPasswordDialog(allowCancel: boolean = true) {
 			const currentKdfType = asKdfType(locator.logins.getUserController().user.kdfVersion)
 			const newKdfType = await locator.kdfPicker.pickKdfType(currentKdfType)
 			showProgressDialog("pleaseWait_msg", locator.loginFacade.changePassword(model.getOldPassword(), model.getNewPassword(), currentKdfType, newKdfType))
-				.then(async ({ encryptedPassword }) => {
-					storeNewPassword(encryptedPassword)
-
+				.then(({ encryptedPassword }) => {
 					Dialog.message("pwChangeValid_msg")
 					dialog.close()
+
+					// do not wait for it or catch the errors, we do not want to confuse the user with the password change if anything goes wrong
+					storeNewPassword(encryptedPassword)
 				})
 				.catch(
 					ofClass(NotAuthenticatedError, (e) => {
@@ -81,6 +72,7 @@ export async function showChangeOwnPasswordDialog(allowCancel: boolean = true) {
 					}),
 				)
 				.catch((e) => {
+					console.error(e)
 					Dialog.message("passwordResetFailed_msg")
 				})
 		}

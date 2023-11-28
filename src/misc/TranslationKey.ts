@@ -1594,4 +1594,3 @@ export type TranslationKeyType =
 	| "addAccount_action"
 	| "removeAccount_action"
 	| "switchAccount_action"
-	| "couldNotStoreNewPassword_msg"
