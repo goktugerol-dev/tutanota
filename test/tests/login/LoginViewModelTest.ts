@@ -17,6 +17,7 @@ import { DeviceConfig } from "../../../src/misc/DeviceConfig"
 import { ResumeSessionErrorReason } from "../../../src/api/worker/facades/LoginFacade"
 import { Mode } from "../../../src/api/common/Env.js"
 import { domainConfigStub } from "../TestUtils.js"
+import { CredentialRemovalHandler } from "../../../src/login/CredentialRemovalHandler.js"
 
 const { anything } = matchers
 
@@ -109,6 +110,7 @@ o.spec("LoginViewModelTest", () => {
 	let secondFactorHandlerMock: SecondFactorHandler
 	let databaseKeyFactory: DatabaseKeyFactory
 	let deviceConfigMock: DeviceConfig
+	let credentialRemovalHandler: CredentialRemovalHandler
 
 	o.beforeEach(async () => {
 		loginControllerMock = object<LoginController>()
@@ -131,6 +133,8 @@ o.spec("LoginViewModelTest", () => {
 		databaseKeyFactory = instance(DatabaseKeyFactory)
 
 		deviceConfigMock = instance(DeviceConfig)
+
+		credentialRemovalHandler = object()
 	})
 
 	/**
@@ -138,7 +142,14 @@ o.spec("LoginViewModelTest", () => {
 	 * on a per test basis, so instead of having a global viewModel to test we just have a factory function to get one in each test
 	 */
 	async function getViewModel() {
-		const viewModel = new LoginViewModel(loginControllerMock, credentialsProviderMock, secondFactorHandlerMock, deviceConfigMock, domainConfigStub)
+		const viewModel = new LoginViewModel(
+			loginControllerMock,
+			credentialsProviderMock,
+			secondFactorHandlerMock,
+			deviceConfigMock,
+			domainConfigStub,
+			credentialRemovalHandler,
+		)
 		await viewModel.init()
 		return viewModel
 	}

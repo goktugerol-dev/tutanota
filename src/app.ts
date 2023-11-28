@@ -192,7 +192,14 @@ import("./translations/en")
 							component: LoginView,
 							cache: {
 								makeViewModel: () =>
-									new LoginViewModel(locator.logins, locator.credentialsProvider, locator.secondFactorHandler, deviceConfig, domainConfig),
+									new LoginViewModel(
+										locator.logins,
+										locator.credentialsProvider,
+										locator.secondFactorHandler,
+										deviceConfig,
+										domainConfig,
+										locator.credentialsRemovalHandler(),
+									),
 							},
 						}
 					},
@@ -447,7 +454,14 @@ import("./translations/en")
 						const { LoginViewModel } = await import("./login/LoginViewModel.js")
 						const domainConfig = locator.domainConfigProvider().getDomainConfigForHostname(location.hostname, location.protocol, location.port)
 						const parentOrigin = domainConfig.partneredDomainTransitionUrl
-						const logins = new LoginViewModel(locator.logins, locator.credentialsProvider, locator.secondFactorHandler, deviceConfig, domainConfig)
+						const logins = new LoginViewModel(
+							locator.logins,
+							locator.credentialsProvider,
+							locator.secondFactorHandler,
+							deviceConfig,
+							domainConfig,
+							locator.credentialsRemovalHandler(),
+						)
 						const credentialsMigrationViewModel = new CredentialsMigrationViewModel(logins, parentOrigin)
 						return {
 							component: CredentialsMigrationView,

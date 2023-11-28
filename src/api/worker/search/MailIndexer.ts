@@ -35,6 +35,7 @@ import { EphemeralCacheStorage } from "../rest/EphemeralCacheStorage"
 import { InfoMessageHandler } from "../../../gui/InfoMessageHandler.js"
 import { ElementDataOS, GroupDataOS, Metadata, MetaDataOS } from "./IndexTables.js"
 import { MailFacade } from "../facades/lazy/MailFacade.js"
+import { b64UserIdHash } from "./DbFacade.js"
 
 export const INITIAL_MAIL_INDEX_INTERVAL_DAYS = 28
 const ENTITY_INDEXER_CHUNK = 20
@@ -266,11 +267,11 @@ export class MailIndexer {
 		})
 	}
 
-	disableMailIndexing(): Promise<void> {
+	disableMailIndexing(userId: Id): Promise<void> {
 		this.mailIndexingEnabled = false
 		this._indexingCancelled = true
 		this._excludedListIds = []
-		return this._db.dbFacade.deleteDatabase()
+		return this._db.dbFacade.deleteDatabase(b64UserIdHash(userId))
 	}
 
 	cancelMailIndexing(): Promise<void> {

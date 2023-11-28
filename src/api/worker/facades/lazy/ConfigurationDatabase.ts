@@ -78,7 +78,7 @@ export class ConfigurationDatabase {
 	}
 
 	async loadConfigDb(user: User, userGroupKey: Aes128Key): Promise<ConfigDb> {
-		const id = `${DB_KEY_PREFIX}_${b64UserIdHash(user)}`
+		const id = `${DB_KEY_PREFIX}_${b64UserIdHash(user._id)}`
 		const db = new DbFacade(VERSION, async (event, db, dbFacade) => {
 			if (event.oldVersion === 0) {
 				db.createObjectStore(MetaDataOS)
@@ -136,7 +136,7 @@ async function loadEncryptionMetadata(db: DbFacade, id: string, userGroupKey: Ae
  * @return the newly generated key and iv for the database contents
  */
 async function initializeDb(db: DbFacade, id: string, userGroupKey: Aes128Key): Promise<EncryptionMetadata> {
-	await db.deleteDatabase().then(() => db.open(id))
+	await db.deleteDatabase(id).then(() => db.open(id))
 	const key = aes256RandomKey()
 	const iv = random.generateRandomData(IV_BYTE_LENGTH)
 	const transaction = await db.createTransaction(false, [MetaDataOS, ExternalImageListOS])

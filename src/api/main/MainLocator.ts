@@ -98,6 +98,7 @@ import { Router, ScopedRouter, ThrottledRouter } from "../../gui/ScopedRouter.js
 import { ShareableGroupType } from "../../sharing/GroupUtils.js"
 import { KdfPicker } from "../../misc/KdfPicker.js"
 import { DomainConfigProvider } from "../common/DomainConfigProvider.js"
+import { CredentialRemovalHandler } from "../../login/CredentialRemovalHandler.js"
 
 assertMainOrNode()
 
@@ -487,6 +488,10 @@ class MainLocator {
 
 	domainConfigProvider(): DomainConfigProvider {
 		return new DomainConfigProvider()
+	}
+
+	credentialsRemovalHandler(): CredentialRemovalHandler {
+		return new CredentialRemovalHandler(this.indexerFacade)
 	}
 
 	private getExposedNativeInterface(): ExposedNativeInterface {

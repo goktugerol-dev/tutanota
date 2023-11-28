@@ -17,6 +17,7 @@ import { DeviceConfig } from "../misc/DeviceConfig"
 import { Const } from "../api/common/TutanotaConstants.js"
 import { getWhitelabelRegistrationDomains } from "./LoginView.js"
 import { CancelledError } from "../api/common/error/CancelledError.js"
+import { CredentialRemovalHandler } from "./CredentialRemovalHandler.js"
 
 assertMainOrNode()
 
@@ -137,6 +138,7 @@ export class LoginViewModel implements ILoginViewModel {
 		private readonly secondFactorHandler: SecondFactorHandler,
 		private readonly deviceConfig: DeviceConfig,
 		private readonly domainConfig: DomainConfig,
+		private readonly credentialRemovalHandler: CredentialRemovalHandler,
 	) {
 		this.state = LoginState.NotAuthenticated
 		this.displayMode = DisplayMode.Form
@@ -234,6 +236,7 @@ export class LoginViewModel implements ILoginViewModel {
 		if (credentials) {
 			await this.loginController.deleteOldSession(credentials.credentials)
 			await this.credentialsProvider.deleteByUserId(credentials.credentials.userId)
+			await this.credentialRemovalHandler.onCredentialsRemoved(credentials.credentials.userId)
 			await this._updateCachedCredentials()
 		}
 	}
