@@ -31,6 +31,8 @@ import {GiftCardGetReturnTypeRef} from "./TypeRefs.js"
 import {GiftCardCreateDataTypeRef} from "./TypeRefs.js"
 import {GiftCardCreateReturnTypeRef} from "./TypeRefs.js"
 import {GiftCardDeleteDataTypeRef} from "./TypeRefs.js"
+import {InvoiceNumberToInvoicePostTypeRef} from "./TypeRefs.js"
+import {InvoiceNumberToInvoiceReturnTypeRef} from "./TypeRefs.js"
 import {LocationServiceGetReturnTypeRef} from "./TypeRefs.js"
 import {MailAddressAliasGetInTypeRef} from "./TypeRefs.js"
 import {MailAddressAliasServiceReturnTypeRef} from "./TypeRefs.js"
@@ -240,6 +242,15 @@ export const GiftCardService = Object.freeze({
 	post: {data: GiftCardCreateDataTypeRef, return: GiftCardCreateReturnTypeRef},
 	put: null,
 	delete: {data: GiftCardDeleteDataTypeRef, return: null},
+} as const)
+
+export const InvoiceNumberToInvoiceService = Object.freeze({
+	app: "sys",
+	name: "InvoiceNumberToInvoiceService",
+	get: null,
+	post: {data: InvoiceNumberToInvoicePostTypeRef, return: InvoiceNumberToInvoiceReturnTypeRef},
+	put: null,
+	delete: null,
 } as const)
 
 export const LocationService = Object.freeze({

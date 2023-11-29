@@ -6308,6 +6308,70 @@ export const typeModels = {
         "app": "sys",
         "version": "91"
     },
+    "InvoiceNumberToInvoicePost": {
+        "name": "InvoiceNumberToInvoicePost",
+        "since": 52,
+        "type": "DATA_TRANSFER_TYPE",
+        "id": 1686,
+        "rootId": "A3N5cwAGlg",
+        "versioned": false,
+        "encrypted": false,
+        "values": {
+            "_format": {
+                "final": false,
+                "name": "_format",
+                "id": 1687,
+                "since": 52,
+                "type": "Number",
+                "cardinality": "One",
+                "encrypted": false
+            },
+            "number": {
+                "final": false,
+                "name": "number",
+                "id": 1688,
+                "since": 52,
+                "type": "String",
+                "cardinality": "One",
+                "encrypted": false
+            }
+        },
+        "associations": {},
+        "app": "sys",
+        "version": "91"
+    },
+    "InvoiceNumberToInvoiceReturn": {
+        "name": "InvoiceNumberToInvoiceReturn",
+        "since": 52,
+        "type": "DATA_TRANSFER_TYPE",
+        "id": 1689,
+        "rootId": "A3N5cwAGmQ",
+        "versioned": false,
+        "encrypted": false,
+        "values": {
+            "_format": {
+                "final": false,
+                "name": "_format",
+                "id": 1690,
+                "since": 52,
+                "type": "Number",
+                "cardinality": "One",
+                "encrypted": false
+            },
+            "invoice": {
+                "final": false,
+                "name": "invoice",
+                "id": 1691,
+                "since": 52,
+                "type": "GeneratedId",
+                "cardinality": "One",
+                "encrypted": false
+            }
+        },
+        "associations": {},
+        "app": "sys",
+        "version": "91"
+    },
     "KeyPair": {
         "name": "KeyPair",
         "since": 1,

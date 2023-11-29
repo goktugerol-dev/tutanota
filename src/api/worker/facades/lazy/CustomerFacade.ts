@@ -14,6 +14,7 @@ import {
 	createCreateCustomerServerPropertiesData,
 	createCustomDomainData,
 	createEmailSenderListElement,
+	createInvoiceNumberToInvoicePost,
 	createMembershipAddData,
 	createMembershipRemoveData,
 	createPaymentDataServicePutData,
@@ -21,6 +22,7 @@ import {
 	CustomerInfoTypeRef,
 	CustomerServerPropertiesTypeRef,
 	CustomerTypeRef,
+	InvoiceTypeRef,
 } from "../../../entities/sys/TypeRefs.js"
 import { assertWorkerOrNode } from "../../../common/Env.js"
 import type { Hex } from "@tutao/tutanota-utils"
@@ -31,12 +33,12 @@ import {
 	BrandingDomainService,
 	CreateCustomerServerProperties,
 	CustomDomainService,
+	InvoiceNumberToInvoiceService,
 	MembershipService,
 	PaymentDataService,
 	PdfInvoiceService,
 	SystemKeysService,
 } from "../../../entities/sys/Services.js"
-import type { InternalGroupData } from "../../../entities/tutanota/TypeRefs.js"
 import { createCustomerAccountCreateData } from "../../../entities/tutanota/TypeRefs.js"
 import type { UserManagementFacade } from "./UserManagementFacade.js"
 import type { GroupManagementFacade } from "./GroupManagementFacade.js"
@@ -397,6 +399,15 @@ export class CustomerFacade {
 	}
 
 	async downloadInvoice(invoiceNumber: string): Promise<DataFile> {
+		// Don't download, but generate => Need invoice info which can be gotten somewhere
+
+		const a = await this.serviceExecutor.post(InvoiceNumberToInvoiceService, createInvoiceNumberToInvoicePost({ number: invoiceNumber }))
+		const invoiceid = a.invoice
+
+		const invoice = await this.entityClient.load(InvoiceTypeRef, invoiceid)
+
+		console.log(invoice)
+
 		const data = createPdfInvoiceServiceData({
 			invoiceNumber,
 		})

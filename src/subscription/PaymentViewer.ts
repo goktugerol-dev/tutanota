@@ -88,6 +88,7 @@ export class PaymentViewer implements UpdatableSettingsViewer {
 
 				locator.entityClient.load(InvoiceInfoTypeRef, neverNull(accountingInfo.invoiceInfo)).then((invoiceInfo) => {
 					this._invoiceInfo = invoiceInfo
+					console.log(this._invoiceInfo)
 					m.redraw()
 				})
 			})

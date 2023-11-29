@@ -1526,6 +1526,30 @@ export type InvoiceItem = {
 	totalPrice: NumberString;
 	type: NumberString;
 }
+export const InvoiceNumberToInvoicePostTypeRef: TypeRef<InvoiceNumberToInvoicePost> = new TypeRef("sys", "InvoiceNumberToInvoicePost")
+
+export function createInvoiceNumberToInvoicePost(values?: Partial<InvoiceNumberToInvoicePost>): InvoiceNumberToInvoicePost {
+	return Object.assign(create(typeModels.InvoiceNumberToInvoicePost, InvoiceNumberToInvoicePostTypeRef), values)
+}
+
+export type InvoiceNumberToInvoicePost = {
+	_type: TypeRef<InvoiceNumberToInvoicePost>;
+
+	_format: NumberString;
+	number: string;
+}
+export const InvoiceNumberToInvoiceReturnTypeRef: TypeRef<InvoiceNumberToInvoiceReturn> = new TypeRef("sys", "InvoiceNumberToInvoiceReturn")
+
+export function createInvoiceNumberToInvoiceReturn(values?: Partial<InvoiceNumberToInvoiceReturn>): InvoiceNumberToInvoiceReturn {
+	return Object.assign(create(typeModels.InvoiceNumberToInvoiceReturn, InvoiceNumberToInvoiceReturnTypeRef), values)
+}
+
+export type InvoiceNumberToInvoiceReturn = {
+	_type: TypeRef<InvoiceNumberToInvoiceReturn>;
+
+	_format: NumberString;
+	invoice: Id;
+}
 export const KeyPairTypeRef: TypeRef<KeyPair> = new TypeRef("sys", "KeyPair")
 
 export function createKeyPair(values?: Partial<KeyPair>): KeyPair {
