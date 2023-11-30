@@ -139,6 +139,101 @@ export const typeModels = {
         "name": "ErrorReportData",
         "since": 23,
         "type": "AGGREGATED_TYPE",
+        "id": 316,
+        "rootId": "B21vbml0b3IAATw",
+        "versioned": false,
+        "encrypted": false,
+        "values": {
+            "_id": {
+                "final": true,
+                "name": "_id",
+                "id": 317,
+                "since": 23,
+                "type": "CustomId",
+                "cardinality": "One",
+                "encrypted": false
+            },
+            "additionalInfo": {
+                "final": true,
+                "name": "additionalInfo",
+                "id": 325,
+                "since": 23,
+                "type": "String",
+                "cardinality": "One",
+                "encrypted": false
+            },
+            "appVersion": {
+                "final": true,
+                "name": "appVersion",
+                "id": 318,
+                "since": 23,
+                "type": "String",
+                "cardinality": "One",
+                "encrypted": false
+            },
+            "clientType": {
+                "final": true,
+                "name": "clientType",
+                "id": 319,
+                "since": 23,
+                "type": "Number",
+                "cardinality": "One",
+                "encrypted": false
+            },
+            "errorClass": {
+                "final": true,
+                "name": "errorClass",
+                "id": 321,
+                "since": 23,
+                "type": "String",
+                "cardinality": "One",
+                "encrypted": false
+            },
+            "errorMessage": {
+                "final": true,
+                "name": "errorMessage",
+                "id": 322,
+                "since": 23,
+                "type": "String",
+                "cardinality": "ZeroOrOne",
+                "encrypted": false
+            },
+            "stackTrace": {
+                "final": true,
+                "name": "stackTrace",
+                "id": 323,
+                "since": 23,
+                "type": "String",
+                "cardinality": "One",
+                "encrypted": false
+            },
+            "userId": {
+                "final": true,
+                "name": "userId",
+                "id": 320,
+                "since": 23,
+                "type": "String",
+                "cardinality": "ZeroOrOne",
+                "encrypted": false
+            },
+            "userMessage": {
+                "final": true,
+                "name": "userMessage",
+                "id": 324,
+                "since": 23,
+                "type": "String",
+                "cardinality": "ZeroOrOne",
+                "encrypted": false
+            }
+        },
+        "associations": {},
+        "app": "monitor",
+        "version": "23"
+    },
+    "ErrorReportFile": {
+        "name": "ErrorReportFile",
+        "since": 23,
+        "type": "AGGREGATED_TYPE",
         "id": 305,
         "rootId": "B21vbml0b3IAATE",
         "versioned": false,
@@ -153,91 +248,26 @@ export const typeModels = {
                 "cardinality": "One",
                 "encrypted": false
             },
-            "additionalInfo": {
+            "content": {
                 "final": true,
-                "name": "additionalInfo",
-                "id": 314,
+                "name": "content",
+                "id": 308,
                 "since": 23,
                 "type": "String",
                 "cardinality": "One",
                 "encrypted": false
             },
-            "appVersion": {
+            "name": {
                 "final": true,
-                "name": "appVersion",
+                "name": "name",
                 "id": 307,
                 "since": 23,
                 "type": "String",
                 "cardinality": "One",
                 "encrypted": false
-            },
-            "clientType": {
-                "final": true,
-                "name": "clientType",
-                "id": 308,
-                "since": 23,
-                "type": "Number",
-                "cardinality": "One",
-                "encrypted": false
-            },
-            "errorClass": {
-                "final": true,
-                "name": "errorClass",
-                "id": 310,
-                "since": 23,
-                "type": "String",
-                "cardinality": "One",
-                "encrypted": false
-            },
-            "errorMessage": {
-                "final": true,
-                "name": "errorMessage",
-                "id": 311,
-                "since": 23,
-                "type": "String",
-                "cardinality": "ZeroOrOne",
-                "encrypted": false
-            },
-            "stackTrace": {
-                "final": true,
-                "name": "stackTrace",
-                "id": 312,
-                "since": 23,
-                "type": "String",
-                "cardinality": "One",
-                "encrypted": false
-            },
-            "userId": {
-                "final": true,
-                "name": "userId",
-                "id": 309,
-                "since": 23,
-                "type": "String",
-                "cardinality": "ZeroOrOne",
-                "encrypted": false
-            },
-            "userMessage": {
-                "final": true,
-                "name": "userMessage",
-                "id": 313,
-                "since": 23,
-                "type": "String",
-                "cardinality": "ZeroOrOne",
-                "encrypted": false
             }
         },
-        "associations": {
-            "logs": {
-                "final": true,
-                "name": "logs",
-                "id": 315,
-                "since": 23,
-                "type": "AGGREGATION",
-                "cardinality": "Any",
-                "refType": "StringWrapper",
-                "dependency": "sys"
-            }
-        },
+        "associations": {},
         "app": "monitor",
         "version": "23"
     },
@@ -338,15 +368,15 @@ export const typeModels = {
         "name": "ReportErrorIn",
         "since": 23,
         "type": "DATA_TRANSFER_TYPE",
-        "id": 330,
-        "rootId": "B21vbml0b3IAAUo",
+        "id": 333,
+        "rootId": "B21vbml0b3IAAU0",
         "versioned": false,
         "encrypted": false,
         "values": {
             "_format": {
                 "final": false,
                 "name": "_format",
-                "id": 331,
+                "id": 334,
                 "since": 23,
                 "type": "Number",
                 "cardinality": "One",
@@ -354,14 +384,24 @@ export const typeModels = {
             }
         },
         "associations": {
-            "report": {
+            "data": {
                 "final": false,
-                "name": "report",
-                "id": 332,
+                "name": "data",
+                "id": 335,
                 "since": 23,
                 "type": "AGGREGATION",
                 "cardinality": "One",
                 "refType": "ErrorReportData",
+                "dependency": null
+            },
+            "files": {
+                "final": false,
+                "name": "files",
+                "id": 336,
+                "since": 23,
+                "type": "AGGREGATION",
+                "cardinality": "Any",
+                "refType": "ErrorReportFile",
                 "dependency": null
             }
         },

@@ -17,7 +17,7 @@ import { RecipientType } from "../api/common/recipients/Recipient.js"
 import { createLogFile } from "../api/common/Logger.js"
 import { DataFile } from "../api/common/DataFile.js"
 import { ReportErrorService } from "../api/entities/monitor/Services.js"
-import { createErrorReportData, createReportErrorIn } from "../api/entities/monitor/TypeRefs.js"
+import { createErrorReportData, createErrorReportFile, createReportErrorIn } from "../api/entities/monitor/TypeRefs.js"
 import { ErrorReportClientType } from "./ClientConstants.js"
 import { createStringWrapper } from "../api/entities/sys/TypeRefs.js"
 import { client } from "./ClientDetector.js"
@@ -291,27 +291,21 @@ export async function sendFeedbackMail(content: FeedbackContent): Promise<void> 
 }
 
 async function sendToServer(error: ErrorInfo, userMessage: string | null, logs: DataFile[]) {
-	function getReportingClientType() {
-		let clientType
+	function getReportingClientType(): ErrorReportClientType {
 		if (env.mode === Mode.Browser) {
 			return ErrorReportClientType.Browser
 		} else {
 			switch (env.platformId) {
 				case "ios":
-					clientType = ErrorReportClientType.Ios
-					break
+					return ErrorReportClientType.Ios
 				case "android":
-					clientType = ErrorReportClientType.Android
-					break
+					return ErrorReportClientType.Android
 				case "darwin":
-					clientType = ErrorReportClientType.MacOS
-					break
+					return ErrorReportClientType.MacOS
 				case "linux":
-					clientType = ErrorReportClientType.Linux
-					break
+					return ErrorReportClientType.Linux
 				case "win32":
-					clientType = ErrorReportClientType.Windows
-					break
+					return ErrorReportClientType.Windows
 				default:
 					return ErrorReportClientType.Linux
 			}
@@ -321,7 +315,7 @@ async function sendToServer(error: ErrorInfo, userMessage: string | null, logs: 
 	const clientType = getReportingClientType()
 
 	const errorData = createReportErrorIn({
-		report: createErrorReportData({
+		data: createErrorReportData({
 			clientType,
 			appVersion: env.versionNumber,
 			userId: locator.logins.getUserController().userId,
@@ -329,11 +323,14 @@ async function sendToServer(error: ErrorInfo, userMessage: string | null, logs: 
 			errorMessage: error.message,
 			userMessage: userMessage,
 			stackTrace: error.stack ?? "",
-			logs: logs.map((log) => {
-				const stringData = uint8ArrayToString("utf-8", log.data)
-				return createStringWrapper({ value: stringData })
-			}),
 			additionalInfo: client.userAgent,
+		}),
+		files: logs.map((log) => {
+			const stringData = uint8ArrayToString("utf-8", log.data)
+			return createErrorReportFile({
+				name: log.name,
+				content: stringData,
+			})
 		}),
 	})
 	await locator.serviceExecutor.post(ReportErrorService, errorData)

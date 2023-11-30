@@ -1,7 +1,7 @@
 import {create} from "../../common/utils/EntityUtils.js"
 import {TypeRef} from "@tutao/tutanota-utils"
 import {typeModels} from "./TypeModels.js"
-import {StringWrapper} from '../sys/TypeRefs.js'
+
 
 export const ApprovalMailTypeRef: TypeRef<ApprovalMail> = new TypeRef("monitor", "ApprovalMail")
 
@@ -53,8 +53,19 @@ export type ErrorReportData = {
 	stackTrace: string;
 	userId: null | string;
 	userMessage: null | string;
+}
+export const ErrorReportFileTypeRef: TypeRef<ErrorReportFile> = new TypeRef("monitor", "ErrorReportFile")
 
-	logs: StringWrapper[];
+export function createErrorReportFile(values?: Partial<ErrorReportFile>): ErrorReportFile {
+	return Object.assign(create(typeModels.ErrorReportFile, ErrorReportFileTypeRef), values)
+}
+
+export type ErrorReportFile = {
+	_type: TypeRef<ErrorReportFile>;
+
+	_id: Id;
+	content: string;
+	name: string;
 }
 export const ReadCounterDataTypeRef: TypeRef<ReadCounterData> = new TypeRef("monitor", "ReadCounterData")
 
@@ -95,7 +106,8 @@ export type ReportErrorIn = {
 
 	_format: NumberString;
 
-	report: ErrorReportData;
+	data: ErrorReportData;
+	files: ErrorReportFile[];
 }
 export const WriteCounterDataTypeRef: TypeRef<WriteCounterData> = new TypeRef("monitor", "WriteCounterData")
 
