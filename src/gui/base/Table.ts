@@ -61,7 +61,7 @@ export class Table implements Component<TableAttrs> {
 		const lineAttrs = a.lines
 			? a.lines.map((lineAttrs) => this._createLine(lineAttrs, a.showActionButtonColumn, a.columnWidths, false, alignments, false))
 			: []
-		return m("", [
+		return m(".scroll-x", [
 			m(`table.table${a.columnHeading ? ".table-header-border" : ""}`, [
 				(a.columnHeading
 					? [

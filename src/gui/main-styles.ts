@@ -2074,6 +2074,9 @@ styles.registerStyle("main", () => {
 			".column-width-small": {
 				width: px(size.column_width_s_mobile),
 			},
+			".table": {
+				"table-layout": "auto",
+			},
 		},
 		"@keyframes move-stripes": {
 			"0%": {
