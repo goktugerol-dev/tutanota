@@ -60,7 +60,6 @@ import { DefaultDateProvider } from "../calendar/date/CalendarUtils.js"
 import { OfflineDbRefCounter } from "./db/OfflineDbRefCounter.js"
 import { WorkerSqlCipher } from "./db/WorkerSqlCipher.js"
 import { TempFs } from "./files/TempFs.js"
-import { WASMArgon2idFacade } from "../api/worker/facades/Argon2idFacade.js"
 
 /**
  * Should be injected during build time.
@@ -198,6 +197,16 @@ async function createComponents(): Promise<Components> {
 		return sse.resetStoredState()
 	})
 	const webDialogController = new WebDialogController()
+
+	// Insert or remove the icon when the 'run in background' setting is changed
+	conf.on(DesktopConfigKey.runAsTrayApp, async (value: boolean) => {
+		if (value) {
+			await tray.create()
+			await tray.update(notifier)
+		} else {
+			tray.destroy()
+		}
+	})
 
 	tray.setWindowManager(wm)
 	const sse = new DesktopSseClient(app, conf, notifier, wm, desktopAlarmScheduler, desktopNet, desktopCrypto, alarmStorage, lang)
