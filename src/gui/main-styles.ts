@@ -1678,7 +1678,7 @@ styles.registerStyle("main", () => {
 		// table
 		".table": {
 			"border-collapse": "collapse",
-			"table-layout": "fixed",
+			"table-layout": "auto",
 			width: "100%",
 		},
 		".table-header-border tr:first-child": {
@@ -2073,9 +2073,6 @@ styles.registerStyle("main", () => {
 			},
 			".column-width-small": {
 				width: px(size.column_width_s_mobile),
-			},
-			".table": {
-				"table-layout": "auto",
 			},
 		},
 		"@keyframes move-stripes": {
