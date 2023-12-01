@@ -218,13 +218,7 @@ o.spec("CalendarEventModelTest", function () {
 				"only address case changed",
 			],
 			["attendees", [att("b@c.d", "b", CalendarAttendeeStatus.NEEDS_ACTION)], [], true, "attendee changed"],
-			[
-				"attendees",
-				[att("b@c.d", "b", CalendarAttendeeStatus.NEEDS_ACTION)],
-				[att("b@c.d", "b", CalendarAttendeeStatus.ACCEPTED)],
-				true,
-				"status changed",
-			],
+			["attendees", [att("b@c.d", "b", CalendarAttendeeStatus.NEEDS_ACTION)], [att("b@c.d", "b", CalendarAttendeeStatus.ACCEPTED)], true, "status changed"],
 			// repeat rule is tested with areRepeatRulesEqual
 		] as const
 

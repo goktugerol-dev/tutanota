@@ -127,12 +127,7 @@ export class GroupInfoIndexer {
 				if (event.operation === OperationType.CREATE) {
 					await this.processNewGroupInfo(event).then((result) => {
 						if (result) {
-							this._core.encryptSearchIndexEntries(
-								result.groupInfo._id,
-								neverNull(result.groupInfo._ownerGroup),
-								result.keyToIndexEntries,
-								indexUpdate,
-							)
+							this._core.encryptSearchIndexEntries(result.groupInfo._id, neverNull(result.groupInfo._ownerGroup), result.keyToIndexEntries, indexUpdate)
 						}
 					})
 				} else if (event.operation === OperationType.UPDATE) {
@@ -140,12 +135,7 @@ export class GroupInfoIndexer {
 						this._core._processDeleted(event, indexUpdate),
 						this.processNewGroupInfo(event).then((result) => {
 							if (result) {
-								this._core.encryptSearchIndexEntries(
-									result.groupInfo._id,
-									neverNull(result.groupInfo._ownerGroup),
-									result.keyToIndexEntries,
-									indexUpdate,
-								)
+								this._core.encryptSearchIndexEntries(result.groupInfo._id, neverNull(result.groupInfo._ownerGroup), result.keyToIndexEntries, indexUpdate)
 							}
 						}),
 					])

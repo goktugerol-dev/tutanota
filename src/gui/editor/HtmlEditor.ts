@@ -51,8 +51,7 @@ export class HtmlEditor implements Component {
 						".abs.text-ellipsis.noselect.z1.i.pr-s",
 						{
 							oncreate: (vnode) => (this.placeholderDomElement = vnode.dom as HTMLElement),
-							onclick: () =>
-								this.mode === HtmlEditorMode.WYSIWYG ? assertNotNull(this.editor.domElement).focus() : assertNotNull(this.domTextArea).focus(),
+							onclick: () => (this.mode === HtmlEditorMode.WYSIWYG ? assertNotNull(this.editor.domElement).focus() : assertNotNull(this.domTextArea).focus()),
 						},
 						this.placeholderId ? lang.get(this.placeholderId) : "",
 				  )

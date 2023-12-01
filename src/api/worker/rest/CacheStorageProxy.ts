@@ -71,9 +71,7 @@ export class LateInitializedCacheStorageImpl implements CacheStorageLateInitiali
 		this._inner?.deinit()
 	}
 
-	private async getStorage(
-		args: OfflineStorageArgs | EphemeralStorageArgs,
-	): Promise<{ storage: SomeStorage; isPersistent: boolean; isNewOfflineDb: boolean }> {
+	private async getStorage(args: OfflineStorageArgs | EphemeralStorageArgs): Promise<{ storage: SomeStorage; isPersistent: boolean; isNewOfflineDb: boolean }> {
 		if (args.type === "offline") {
 			try {
 				const storage = await this.offlineStorageProvider()

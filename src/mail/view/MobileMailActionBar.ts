@@ -101,21 +101,24 @@ export class MobileMailActionBar implements Component<MobileMailActionBarAttrs> 
 			title: "reply_action",
 			click: viewModel.canReplyAll()
 				? (e, dom) => {
-						const dropdown = new Dropdown(() => {
-							const buttons: DropdownButtonAttrs[] = []
-							buttons.push({
-								label: "replyAll_action",
-								icon: Icons.ReplyAll,
-								click: () => viewModel.reply(true),
-							})
+						const dropdown = new Dropdown(
+							() => {
+								const buttons: DropdownButtonAttrs[] = []
+								buttons.push({
+									label: "replyAll_action",
+									icon: Icons.ReplyAll,
+									click: () => viewModel.reply(true),
+								})
 
-							buttons.push({
-								label: "reply_action",
-								icon: Icons.Reply,
-								click: () => viewModel.reply(false),
-							})
-							return buttons
-						}, this.dropdownWidth() ?? 300)
+								buttons.push({
+									label: "reply_action",
+									icon: Icons.Reply,
+									click: () => viewModel.reply(false),
+								})
+								return buttons
+							},
+							this.dropdownWidth() ?? 300,
+						)
 
 						const domRect = this.dom?.getBoundingClientRect() ?? dom.getBoundingClientRect()
 						dropdown.setOrigin(domRect)

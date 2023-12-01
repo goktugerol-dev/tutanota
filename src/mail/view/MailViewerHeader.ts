@@ -245,9 +245,7 @@ export class MailViewerHeader implements Component<MailViewerHeaderAttrs> {
 		return [
 			m(
 				"." + responsiveCardHMargin(),
-				this.renderPhishingWarning(viewModel) ||
-					this.renderHardAuthenticationFailWarning(viewModel) ||
-					this.renderSoftAuthenticationFailWarning(viewModel),
+				this.renderPhishingWarning(viewModel) || this.renderHardAuthenticationFailWarning(viewModel) || this.renderSoftAuthenticationFailWarning(viewModel),
 			),
 			m("." + responsiveCardHMargin(), this.renderExternalContentBanner(attrs)),
 			m("hr.hr.mt-xs." + responsiveCardHMargin()),
@@ -502,11 +500,7 @@ export class MailViewerHeader implements Component<MailViewerHeaderAttrs> {
 										},
 									},
 									[
-										m(
-											"",
-											lang.get("attachmentAmount_label", { "{amount}": attachmentCount + "" }) +
-												` (${formatStorageSize(totalAttachmentSize)})`,
-										),
+										m("", lang.get("attachmentAmount_label", { "{amount}": attachmentCount + "" }) + ` (${formatStorageSize(totalAttachmentSize)})`),
 										m(Icon, {
 											icon: BootIcons.Expand,
 											style: {
@@ -716,8 +710,7 @@ export class MailViewerHeader implements Component<MailViewerHeaderAttrs> {
 						})
 						actionButtons.push({
 							label: "move_action",
-							click: (_: MouseEvent, dom: HTMLElement) =>
-								showMoveMailsDropdown(viewModel.mailModel, dom.getBoundingClientRect(), [viewModel.mail]),
+							click: (_: MouseEvent, dom: HTMLElement) => showMoveMailsDropdown(viewModel.mailModel, dom.getBoundingClientRect(), [viewModel.mail]),
 							icon: Icons.Folder,
 						})
 					}

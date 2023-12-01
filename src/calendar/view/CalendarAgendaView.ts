@@ -137,8 +137,8 @@ export class CalendarAgendaView implements Component<Attrs> {
 						day.getTime() === today.getTime()
 							? lang.get("today_label")
 							: day.getTime() === tomorrow.getTime()
-							? lang.get("tomorrow_label")
-							: formatDateWithWeekday(day)
+							  ? lang.get("tomorrow_label")
+							  : formatDateWithWeekday(day)
 					return m(
 						".flex.mlr-l.calendar-agenda-row.mb-s.col",
 						{

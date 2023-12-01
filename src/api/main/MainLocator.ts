@@ -175,14 +175,7 @@ class MainLocator {
 	})
 
 	readonly offlineIndicatorViewModel = lazyMemoized(async () => {
-		return new OfflineIndicatorViewModel(
-			this.cacheStorage,
-			this.loginListener,
-			this.connectivityModel,
-			this.logins,
-			this.progressTracker,
-			await this.redraw(),
-		)
+		return new OfflineIndicatorViewModel(this.cacheStorage, this.loginListener, this.connectivityModel, this.logins, this.progressTracker, await this.redraw())
 	})
 
 	async appHeaderAttrs(): Promise<AppHeaderAttrs> {
@@ -368,15 +361,7 @@ class MainLocator {
 		const factory = await this.mailViewerViewModelFactory()
 		const m = await import("mithril")
 		return (options: CreateMailViewerOptions) => {
-			return new ConversationViewModel(
-				options,
-				(options) => factory(options),
-				this.entityClient,
-				this.eventController,
-				deviceConfig,
-				this.mailModel,
-				m.redraw,
-			)
+			return new ConversationViewModel(options, (options) => factory(options), this.entityClient, this.eventController, deviceConfig, this.mailModel, m.redraw)
 		}
 	}
 
@@ -642,13 +627,7 @@ class MainLocator {
 				isApp(),
 			)
 		}
-		this.secondFactorHandler = new SecondFactorHandler(
-			this.eventController,
-			this.entityClient,
-			this.webAuthn,
-			this.loginFacade,
-			this.domainConfigProvider(),
-		)
+		this.secondFactorHandler = new SecondFactorHandler(this.eventController, this.entityClient, this.webAuthn, this.loginFacade, this.domainConfigProvider())
 		this.loginListener = new PageContextLoginListener(this.secondFactorHandler)
 		this.credentialsProvider = await createCredentialsProvider(
 			deviceEncryptionFacade,

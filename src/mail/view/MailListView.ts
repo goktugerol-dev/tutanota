@@ -445,8 +445,8 @@ export class MailListView implements Component<MailListViewAttrs> {
 						this.showingSpamOrTrash
 							? lang.get("recover_label") // show "recover" if this is the trash/spam folder
 							: this.showingArchive // otherwise show "inbox" or "archive" depending on the folder
-							? lang.get("received_action")
-							: lang.get("archive_label"),
+							  ? lang.get("received_action")
+							  : lang.get("archive_label"),
 					),
 			  ]
 	}

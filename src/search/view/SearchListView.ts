@@ -47,8 +47,7 @@ export class SearchListView implements Component<SearchListViewAttrs> {
 			? attrs.listModel.isEmptyAndDone()
 				? m(ColumnEmptyMessageBox, {
 						icon: showingMail ? BootIcons.Mail : BootIcons.Contacts,
-						message: () =>
-							lang.get("searchNoResults_msg") + "\n" + (attrs.isFreeAccount ? lang.get("goPremium_msg") : lang.get("switchSearchInMenu_label")),
+						message: () => lang.get("searchNoResults_msg") + "\n" + (attrs.isFreeAccount ? lang.get("goPremium_msg") : lang.get("switchSearchInMenu_label")),
 						color: theme.list_message_bg,
 				  })
 				: m(List, {
@@ -82,9 +81,7 @@ export class SearchListView implements Component<SearchListViewAttrs> {
 		multiselectionAllowed: MultiselectMode.Enabled,
 		swipe: null,
 		createElement: (dom) => {
-			const row: SearchResultListRow = new SearchResultListRow(
-				new MailRow(true, () => row.entity && this.listModel.onSingleExclusiveSelection(row.entity)),
-			)
+			const row: SearchResultListRow = new SearchResultListRow(new MailRow(true, () => row.entity && this.listModel.onSingleExclusiveSelection(row.entity)))
 			m.render(dom, row.render())
 			return row
 		},

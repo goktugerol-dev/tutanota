@@ -49,9 +49,7 @@ async function prepareDialog({ featureType, count, reactivate }: BookingParams):
 		const price = await locator.bookingFacade.getPrice(featureType, count, reactivate)
 		const priceChangeModel = new PriceChangeModel(price, featureType)
 		const customerInfo = await locator.logins.getUserController().loadCustomerInfo()
-		const accountingInfo = await locator.entityClient
-			.load(AccountingInfoTypeRef, customerInfo.accountingInfo)
-			.catch(ofClass(NotAuthorizedError, () => null))
+		const accountingInfo = await locator.entityClient.load(AccountingInfoTypeRef, customerInfo.accountingInfo).catch(ofClass(NotAuthorizedError, () => null))
 		if (accountingInfo && accountingInfo.paymentMethod == null) {
 			const confirm = await Dialog.confirm("enterPaymentDataFirst_msg")
 			if (confirm) {

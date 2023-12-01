@@ -618,8 +618,7 @@ export class MailViewerViewModel {
 			console.log("Error getting external image rule:", e)
 			return ExternalImageRule.None
 		})
-		const isAllowedAndAuthenticatedExternalSender =
-			externalImageRule === ExternalImageRule.Allow && mail.authStatus === MailAuthenticationStatus.AUTHENTICATED
+		const isAllowedAndAuthenticatedExternalSender = externalImageRule === ExternalImageRule.Allow && mail.authStatus === MailAuthenticationStatus.AUTHENTICATED
 		// We should not try to sanitize body while we still animate because it's a heavy operation.
 		await delayBodyRenderingUntil
 		this.renderIsDelayed = false
@@ -632,10 +631,10 @@ export class MailViewerViewModel {
 			externalImageRule === ExternalImageRule.Block
 				? ContentBlockingStatus.AlwaysBlock
 				: isAllowedAndAuthenticatedExternalSender
-				? ContentBlockingStatus.AlwaysShow
-				: this.sanitizeResult.externalContent > 0
-				? ContentBlockingStatus.Block
-				: ContentBlockingStatus.NoExternalContent
+				  ? ContentBlockingStatus.AlwaysShow
+				  : this.sanitizeResult.externalContent > 0
+					  ? ContentBlockingStatus.Block
+					  : ContentBlockingStatus.NoExternalContent
 		m.redraw()
 		this.renderedMail = this.mail
 		return this.sanitizeResult.inlineImageCids
@@ -1008,8 +1007,7 @@ export class MailViewerViewModel {
 
 	canReplyAll(): boolean {
 		return (
-			this.logins.getUserController().isInternalUser() &&
-			this.getToRecipients().length + this.getCcRecipients().length + this.getBccRecipients().length > 1
+			this.logins.getUserController().isInternalUser() && this.getToRecipients().length + this.getCcRecipients().length + this.getBccRecipients().length > 1
 		)
 	}
 

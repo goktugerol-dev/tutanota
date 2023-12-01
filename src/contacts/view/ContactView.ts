@@ -126,8 +126,7 @@ export class ContactView extends BaseTopLevelView implements TopLevelView<Contac
 
 		this.listColumn = new ViewColumn(
 			{
-				view: () =>
-					this.inContactListView() ? this.renderContactListRecipientColumn(vnode.attrs.header) : this.renderContactListColumn(vnode.attrs.header),
+				view: () => (this.inContactListView() ? this.renderContactListRecipientColumn(vnode.attrs.header) : this.renderContactListColumn(vnode.attrs.header)),
 			},
 			ColumnType.Background,
 			size.second_col_min_width,
@@ -318,12 +317,10 @@ export class ContactView extends BaseTopLevelView implements TopLevelView<Contac
 									editAction: () => this.editSelectedContact(),
 									deleteAction: () => this.deleteSelectedContacts(),
 							  })
-						: (styles.isSingleColumnLayout() &&
-								this.viewSlider.focusedColumn === this.listColumn &&
-								this.contactViewModel.listModel.state.inMultiselect) ||
-						  this.contactListViewModel.listModel?.state.inMultiselect
-						? m(MobileBottomActionBar, this.detailsViewerActions())
-						: m(BottomNav),
+						: (styles.isSingleColumnLayout() && this.viewSlider.focusedColumn === this.listColumn && this.contactViewModel.listModel.state.inMultiselect) ||
+							  this.contactListViewModel.listModel?.state.inMultiselect
+						  ? m(MobileBottomActionBar, this.detailsViewerActions())
+						  : m(BottomNav),
 			}),
 		)
 	}

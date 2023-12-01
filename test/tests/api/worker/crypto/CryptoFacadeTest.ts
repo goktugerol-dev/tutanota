@@ -283,13 +283,7 @@ o.spec("crypto facade", function () {
 			let value = "this is a string value"
 			let encryptedValue = neverNull(encryptValue("test", valueType, value, sk))
 			let expected = uint8ArrayToBase64(
-				aesEncrypt(
-					sk,
-					stringToUtf8Uint8Array(value),
-					base64ToUint8Array(encryptedValue).slice(ENABLE_MAC ? 1 : 0, ENABLE_MAC ? 17 : 16),
-					true,
-					ENABLE_MAC,
-				),
+				aesEncrypt(sk, stringToUtf8Uint8Array(value), base64ToUint8Array(encryptedValue).slice(ENABLE_MAC ? 1 : 0, ENABLE_MAC ? 17 : 16), true, ENABLE_MAC),
 			)
 			o(encryptedValue).equals(expected)
 			o(decryptValue("test", valueType, encryptedValue, sk)).equals(value)
@@ -441,9 +435,7 @@ o.spec("crypto facade", function () {
 				{
 					_id: "recipientId",
 					address: "support@yahoo.com",
-					name: uint8ArrayToBase64(
-						aesEncrypt(sk, stringToUtf8Uint8Array(recipientName), random.generateRandomData(IV_BYTE_LENGTH), true, ENABLE_MAC),
-					),
+					name: uint8ArrayToBase64(aesEncrypt(sk, stringToUtf8Uint8Array(recipientName), random.generateRandomData(IV_BYTE_LENGTH), true, ENABLE_MAC)),
 				},
 			],
 			replyTos: [],

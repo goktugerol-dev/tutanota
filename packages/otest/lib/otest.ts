@@ -320,4 +320,4 @@ function o<T>(item: T | string, definition?: () => Promise<void> | void) {
 Object.assign(o, otest)
 Object.setPrototypeOf(o, Object.getPrototypeOf(otest))
 
-export default o as CallableOTest
+export default (o as CallableOTest)

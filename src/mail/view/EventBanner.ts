@@ -53,9 +53,7 @@ export class EventBanner implements Component<EventBannerAttrs> {
 						label: "viewEvent_action",
 						type: ButtonType.Secondary,
 						click: (e, dom) =>
-							import("../../calendar/date/CalendarInvites").then(({ showEventDetails }) =>
-								showEventDetails(event, dom.getBoundingClientRect(), mail),
-							),
+							import("../../calendar/date/CalendarInvites").then(({ showEventDetails }) => showEventDetails(event, dom.getBoundingClientRect(), mail)),
 					},
 				],
 			} satisfies InfoBannerAttrs),

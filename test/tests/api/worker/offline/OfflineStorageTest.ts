@@ -96,9 +96,7 @@ o.spec("OfflineStorage", function () {
 			let preparedQuery
 			switch (typeModel.type) {
 				case TypeId.Element.valueOf():
-					preparedQuery = sql`insert into element_entities values (${type}, ${(entity as ElementEntity)._id}, ${entity._ownerGroup}, ${encode(
-						entity,
-					)})`
+					preparedQuery = sql`insert into element_entities values (${type}, ${(entity as ElementEntity)._id}, ${entity._ownerGroup}, ${encode(entity)})`
 					break
 				case TypeId.ListElement.valueOf():
 					const [listId, elementId] = (entity as ListElementEntity)._id
@@ -106,9 +104,7 @@ o.spec("OfflineStorage", function () {
 					break
 				case TypeId.BlobElement.valueOf():
 					const [archiveId, blobElementId] = (entity as BlobElementEntity)._id
-					preparedQuery = sql`INSERT INTO blob_element_entities VALUES (${type}, ${archiveId}, ${blobElementId}, ${entity._ownerGroup}, ${encode(
-						entity,
-					)})`
+					preparedQuery = sql`INSERT INTO blob_element_entities VALUES (${type}, ${archiveId}, ${blobElementId}, ${entity._ownerGroup}, ${encode(entity)})`
 					break
 				default:
 					throw new Error("must be a persistent type")

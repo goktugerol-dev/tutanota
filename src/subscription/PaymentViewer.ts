@@ -255,8 +255,8 @@ export class PaymentViewer implements UpdatableSettingsViewer {
 							icon: Icons.Download,
 							size: ButtonSize.Compact,
 							click: () => {
-								showProgressDialog("pleaseWait_msg", locator.customerFacade.downloadInvoice(neverNull(posting.invoiceNumber))).then(
-									(pdfInvoice) => locator.fileController.saveDataFile(pdfInvoice),
+								showProgressDialog("pleaseWait_msg", locator.customerFacade.downloadInvoice(neverNull(posting.invoiceNumber))).then((pdfInvoice) =>
+									locator.fileController.saveDataFile(pdfInvoice),
 								)
 							},
 					  }

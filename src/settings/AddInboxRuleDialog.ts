@@ -72,9 +72,7 @@ export function show(mailBoxDetail: MailboxDetail, ruleOrTemplate: InboxRule) {
 			rule.targetFolder = inboxRuleTarget()._id
 			const props = locator.logins.getUserController().props
 			const inboxRules = props.inboxRules
-			props.inboxRules = isNewRule
-				? [...inboxRules, rule]
-				: inboxRules.map((inboxRule) => (isSameId(inboxRule._id, ruleOrTemplate._id) ? rule : inboxRule))
+			props.inboxRules = isNewRule ? [...inboxRules, rule] : inboxRules.map((inboxRule) => (isSameId(inboxRule._id, ruleOrTemplate._id) ? rule : inboxRule))
 
 			locator.entityClient
 				.update(props)

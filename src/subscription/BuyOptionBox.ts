@@ -171,11 +171,7 @@ export class BuyOptionBox implements Component<BuyOptionBoxAttr> {
 											"margin-top": "auto",
 										},
 									},
-									attrs.actionButton
-										? typeof attrs.actionButton === "function"
-											? m(Button, attrs.actionButton())
-											: m(attrs.actionButton)
-										: null,
+									attrs.actionButton ? (typeof attrs.actionButton === "function" ? m(Button, attrs.actionButton()) : m(attrs.actionButton)) : null,
 							  )
 							: null,
 					],

@@ -521,8 +521,7 @@ export class SearchBar implements Component<SearchBarAttrs> {
 						resultCount: result.results.length,
 						shownCount: overlayEntries.length,
 						indexTimestamp: result.currentIndexTimestamp,
-						allowShowMore:
-							!isSameTypeRef(result.restriction.type, GroupInfoTypeRef) && !isSameTypeRef(result.restriction.type, WhitelabelChildTypeRef),
+						allowShowMore: !isSameTypeRef(result.restriction.type, GroupInfoTypeRef) && !isSameTypeRef(result.restriction.type, WhitelabelChildTypeRef),
 					}
 					overlayEntries.push(moreEntry)
 				}

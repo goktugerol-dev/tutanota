@@ -103,14 +103,14 @@ export class BaseSearchBar implements ClassComponent<BaseSearchBarAttrs> {
 										},
 								  })
 								: attrs.text
-								? m(Icon, {
-										icon: Icons.Close,
-										class: "flex-center items-center icon-large",
-										style: {
-											fill: theme.header_button,
-										},
-								  })
-								: null,
+								  ? m(Icon, {
+											icon: Icons.Close,
+											class: "flex-center items-center icon-large",
+											style: {
+												fill: theme.header_button,
+											},
+									  })
+								  : null,
 						),
 					],
 				),

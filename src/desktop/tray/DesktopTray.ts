@@ -36,13 +36,14 @@ export class DesktopTray {
 	constructor(config: DesktopConfig) {
 		this._conf = config
 		this.getAppIcon()
-		app.on("will-quit", (e: Event) => {
-			if (this._tray) {
-				this._tray.destroy()
+		app
+			.on("will-quit", (e: Event) => {
+				if (this._tray) {
+					this._tray.destroy()
 
-				this._tray = null
-			}
-		})
+					this._tray = null
+				}
+			})
 			.whenReady()
 			.then(async () => {
 				if (!this._wm) log.warn("Tray: No WM set before 'ready'!")

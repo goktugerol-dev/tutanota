@@ -423,22 +423,20 @@ export class GlobalSettingsViewer implements UpdatableSettingsViewer {
 			.then((customer) => {
 				this.customer = customer
 
-				return locator.entityClient
-					.loadRange(AuditLogEntryTypeRef, neverNull(customer.auditLog).items, GENERATED_MAX_ID, 200, true)
-					.then((auditLog) => {
-						this.auditLogLoaded = true // indicate that we do not need to reload the list again when we expand
-						this.auditLogLines = auditLog.map((auditLogEntry) => {
-							return {
-								cells: [auditLogEntry.action, auditLogEntry.modifiedEntity, formatDateTimeFromYesterdayOn(auditLogEntry.date)],
-								actionButtonAttrs: {
-									title: "showMore_action",
-									icon: Icons.More,
-									click: () => this.showAuditLogDetails(auditLogEntry, customer),
-									size: ButtonSize.Compact,
-								},
-							}
-						})
+				return locator.entityClient.loadRange(AuditLogEntryTypeRef, neverNull(customer.auditLog).items, GENERATED_MAX_ID, 200, true).then((auditLog) => {
+					this.auditLogLoaded = true // indicate that we do not need to reload the list again when we expand
+					this.auditLogLines = auditLog.map((auditLogEntry) => {
+						return {
+							cells: [auditLogEntry.action, auditLogEntry.modifiedEntity, formatDateTimeFromYesterdayOn(auditLogEntry.date)],
+							actionButtonAttrs: {
+								title: "showMore_action",
+								icon: Icons.More,
+								click: () => this.showAuditLogDetails(auditLogEntry, customer),
+								size: ButtonSize.Compact,
+							},
+						}
 					})
+				})
 			})
 	}
 
@@ -499,12 +497,7 @@ export class GlobalSettingsViewer implements UpdatableSettingsViewer {
 							groupInfoValue
 								? m("tr", [
 										m("td", lang.get("group_label")),
-										m(
-											"td.pl",
-											customer.adminGroup === groupInfoValue.group
-												? lang.get("globalAdmin_label")
-												: this.getGroupInfoDisplayText(groupInfoValue),
-										),
+										m("td.pl", customer.adminGroup === groupInfoValue.group ? lang.get("globalAdmin_label") : this.getGroupInfoDisplayText(groupInfoValue)),
 								  ])
 								: null,
 							m("tr", [m("td", lang.get("time_label")), m("td.pl", formatDateTime(entry.date))]),
@@ -674,8 +667,7 @@ export class GlobalSettingsViewer implements UpdatableSettingsViewer {
 					.removeDomain(domainInfo.domain)
 					.catch(
 						ofClass(PreconditionFailedError, () => {
-							let registrationDomains =
-								this.props() != null ? this.props().whitelabelRegistrationDomains.map((domainWrapper) => domainWrapper.value) : []
+							let registrationDomains = this.props() != null ? this.props().whitelabelRegistrationDomains.map((domainWrapper) => domainWrapper.value) : []
 
 							if (registrationDomains.indexOf(domainInfo.domain) !== -1) {
 								Dialog.message(() =>

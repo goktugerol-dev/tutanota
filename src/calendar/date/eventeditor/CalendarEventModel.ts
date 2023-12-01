@@ -194,8 +194,7 @@ export async function makeCalendarEventModel(
 		calendarModel.loadCalendarInfos(new NoopProgressMonitor()),
 	])
 	const selectedCalendar = getPreselectedCalendar(calendars, initialValues)
-	const getPasswordStrength = (password: string, recipientInfo: PartialRecipient) =>
-		getPasswordStrengthForUser(password, recipientInfo, mailboxDetail, logins)
+	const getPasswordStrength = (password: string, recipientInfo: PartialRecipient) => getPasswordStrengthForUser(password, recipientInfo, mailboxDetail, logins)
 
 	const eventType = getEventType(
 		initialValues,

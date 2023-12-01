@@ -112,8 +112,7 @@ export class MailView extends BaseTopLevelView implements TopLevelView<MailViewA
 					const listId = this.mailViewModel.getListId()
 					return m(BackgroundColumnLayout, {
 						backgroundColor: theme.navigation_bg,
-						desktopToolbar: () =>
-							m(DesktopListToolbar, m(SelectAllCheckbox, selectionAttrsForList(this.mailViewModel.listModel)), this.renderFilterButton()),
+						desktopToolbar: () => m(DesktopListToolbar, m(SelectAllCheckbox, selectionAttrsForList(this.mailViewModel.listModel)), this.renderFilterButton()),
 						columnLayout: listId
 							? m(
 									"",
@@ -147,9 +146,7 @@ export class MailView extends BaseTopLevelView implements TopLevelView<MailViewA
 												console.warn("Cannot delete folder, no folder is selected")
 												return
 											}
-											const confirmed = await Dialog.confirm(() =>
-												lang.get("confirmDeleteFinallySystemFolder_msg", { "{1}": getFolderName(folder) }),
-											)
+											const confirmed = await Dialog.confirm(() => lang.get("confirmDeleteFinallySystemFolder_msg", { "{1}": getFolderName(folder) }))
 											if (confirmed) {
 												showProgressDialog("progressDeleting_msg", this.mailViewModel.finallyDeleteAllMailsInSelectedFolder(folder))
 											}
@@ -299,8 +296,8 @@ export class MailView extends BaseTopLevelView implements TopLevelView<MailViewA
 				loadingAll: this.mailViewModel.listModel?.state.loadingAll
 					? "loading"
 					: this.mailViewModel.listModel?.state.loadingStatus === ListLoadingState.Done
-					? "loaded"
-					: "can_load",
+					  ? "loaded"
+					  : "can_load",
 				getSelectionMessage: (selected: ReadonlyArray<Mail>) => getMailSelectionMessage(selected),
 			}),
 		})
@@ -325,13 +322,9 @@ export class MailView extends BaseTopLevelView implements TopLevelView<MailViewA
 						])
 							.then(([mailbox, dataFiles, { appendEmailSignature }, { newMailEditorFromTemplate }]) => {
 								mailbox &&
-									newMailEditorFromTemplate(
-										mailbox,
-										{},
-										"",
-										appendEmailSignature("", locator.logins.getUserController().props),
-										dataFiles,
-									).then((dialog) => dialog.show())
+									newMailEditorFromTemplate(mailbox, {}, "", appendEmailSignature("", locator.logins.getUserController().props), dataFiles).then((dialog) =>
+										dialog.show(),
+									)
 							})
 							.catch(ofClass(PermissionError, noOp))
 							.catch(ofClass(UserError, showUserError))
@@ -359,12 +352,12 @@ export class MailView extends BaseTopLevelView implements TopLevelView<MailViewA
 					styles.isSingleColumnLayout() && this.viewSlider.focusedColumn === this.mailColumn && this.conversationViewModel
 						? m(MobileMailActionBar, { viewModel: this.conversationViewModel.primaryViewModel() })
 						: styles.isSingleColumnLayout() && this.mailViewModel.listModel?.state.inMultiselect
-						? m(MobileMailMultiselectionActionBar, {
-								mails: this.mailViewModel.listModel.getSelectedAsArray(),
-								selectNone: () => this.mailViewModel.listModel?.selectNone(),
-								mailModel: locator.mailModel,
-						  })
-						: m(BottomNav),
+						  ? m(MobileMailMultiselectionActionBar, {
+									mails: this.mailViewModel.listModel.getSelectedAsArray(),
+									selectNone: () => this.mailViewModel.listModel?.selectNone(),
+									mailModel: locator.mailModel,
+							  })
+						  : m(BottomNav),
 			}),
 		)
 	}
@@ -544,12 +537,12 @@ export class MailView extends BaseTopLevelView implements TopLevelView<MailViewA
 						button: editingFolderForMailGroup
 							? null
 							: !styles.isUsingBottomNavigation() && isNewMailActionAvailable()
-							? {
-									type: ButtonType.FolderColumnHeader,
-									label: "newMail_action",
-									click: () => this.showNewMailDialog().catch(ofClass(PermissionError, noOp)),
-							  }
-							: null,
+							  ? {
+										type: ButtonType.FolderColumnHeader,
+										label: "newMail_action",
+										click: () => this.showNewMailDialog().catch(ofClass(PermissionError, noOp)),
+								  }
+							  : null,
 						content: this.renderFolders(editingFolderForMailGroup),
 						ariaLabel: "folderTitle_label",
 					})
@@ -614,14 +607,12 @@ export class MailView extends BaseTopLevelView implements TopLevelView<MailViewA
 			if (location.hash.length > 5) {
 				let url = location.hash.substring(5)
 				let decodedUrl = decodeURIComponent(url)
-				Promise.all([locator.mailModel.getUserMailboxDetails(), import("../editor/MailEditor")]).then(
-					([mailboxDetails, { newMailtoUrlMailEditor }]) => {
-						newMailtoUrlMailEditor(decodedUrl, false, mailboxDetails)
-							.then((editor) => editor.show())
-							.catch(ofClass(CancelledError, noOp))
-						history.pushState("", document.title, window.location.pathname) // remove # from url
-					},
-				)
+				Promise.all([locator.mailModel.getUserMailboxDetails(), import("../editor/MailEditor")]).then(([mailboxDetails, { newMailtoUrlMailEditor }]) => {
+					newMailtoUrlMailEditor(decodedUrl, false, mailboxDetails)
+						.then((editor) => editor.show())
+						.catch(ofClass(CancelledError, noOp))
+					history.pushState("", document.title, window.location.pathname) // remove # from url
+				})
 			}
 		} else if (args.action === "supportMail" && locator.logins.isGlobalAdminUserLoggedIn()) {
 			import("../editor/MailEditor").then(({ writeSupportMail }) => writeSupportMail())
@@ -629,9 +620,7 @@ export class MailView extends BaseTopLevelView implements TopLevelView<MailViewA
 
 		if (isApp()) {
 			let userGroupInfo = locator.logins.getUserController().userGroupInfo
-			locator.pushService.closePushNotification(
-				userGroupInfo.mailAddressAliases.map((alias) => alias.mailAddress).concat(userGroupInfo.mailAddress || []),
-			)
+			locator.pushService.closePushNotification(userGroupInfo.mailAddressAliases.map((alias) => alias.mailAddress).concat(userGroupInfo.mailAddress || []))
 		}
 
 		this.mailViewModel.showMail(args.listId, args.mailId)

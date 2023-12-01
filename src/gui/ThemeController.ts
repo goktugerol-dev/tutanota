@@ -224,10 +224,7 @@ export class ThemeController {
 			return Object.assign({}, this.getBaseTheme(customizations.base), customizations)
 		} else {
 			const themeWithoutLogo = Object.assign({}, this.getBaseTheme(customizations.base), customizations)
-			const coloredTutanotaLogo = getLogoSvg(
-				themeWithoutLogo.content_accent,
-				customizations.base === "light" ? logo_text_dark_grey : logo_text_bright_grey,
-			)
+			const coloredTutanotaLogo = getLogoSvg(themeWithoutLogo.content_accent, customizations.base === "light" ? logo_text_dark_grey : logo_text_bright_grey)
 			return { ...themeWithoutLogo, ...{ logo: coloredTutanotaLogo } }
 		}
 	}

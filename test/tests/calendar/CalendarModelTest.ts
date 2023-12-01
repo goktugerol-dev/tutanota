@@ -202,8 +202,7 @@ o.spec("CalendarModel", function () {
 			const existingEvent = createCalendarEvent({ uid })
 			const calendarFacade = makeCalendarFacade(
 				{
-					getEventsByUid: (loadUid) =>
-						uid === loadUid ? Promise.resolve({ progenitor: existingEvent, alteredInstances: [] }) : Promise.resolve(null),
+					getEventsByUid: (loadUid) => (uid === loadUid ? Promise.resolve({ progenitor: existingEvent, alteredInstances: [] }) : Promise.resolve(null)),
 				},
 				restClientMock,
 			)
@@ -263,8 +262,7 @@ o.spec("CalendarModel", function () {
 			const workerClient = makeWorkerClient()
 			const calendarFacade = makeCalendarFacade(
 				{
-					getEventsByUid: (loadUid) =>
-						uid === loadUid ? Promise.resolve({ progenitor: existingEvent, alteredInstances: [] }) : Promise.resolve(null),
+					getEventsByUid: (loadUid) => (uid === loadUid ? Promise.resolve({ progenitor: existingEvent, alteredInstances: [] }) : Promise.resolve(null)),
 				},
 				restClientMock,
 			)
@@ -388,8 +386,7 @@ o.spec("CalendarModel", function () {
 			const workerClient = makeWorkerClient()
 			const calendarFacade = makeCalendarFacade(
 				{
-					getEventsByUid: (loadUid) =>
-						uid === loadUid ? Promise.resolve({ progenitor: existingEvent, alteredInstances: [] }) : Promise.resolve(null),
+					getEventsByUid: (loadUid) => (uid === loadUid ? Promise.resolve({ progenitor: existingEvent, alteredInstances: [] }) : Promise.resolve(null)),
 				},
 				restClientMock,
 			)
@@ -462,8 +459,7 @@ o.spec("CalendarModel", function () {
 			const workerClient = makeWorkerClient()
 			const calendarFacade = makeCalendarFacade(
 				{
-					getEventsByUid: (loadUid) =>
-						uid === loadUid ? Promise.resolve({ progenitor: existingEvent, alteredInstances: [] }) : Promise.resolve(null),
+					getEventsByUid: (loadUid) => (uid === loadUid ? Promise.resolve({ progenitor: existingEvent, alteredInstances: [] }) : Promise.resolve(null)),
 				},
 				restClientMock,
 			)
@@ -531,8 +527,7 @@ o.spec("CalendarModel", function () {
 				const workerClient = makeWorkerClient()
 				const calendarFacade = makeCalendarFacade(
 					{
-						getEventsByUid: (loadUid) =>
-							uid === loadUid ? Promise.resolve({ progenitor: existingEvent, alteredInstances: [] }) : Promise.resolve(null),
+						getEventsByUid: (loadUid) => (uid === loadUid ? Promise.resolve({ progenitor: existingEvent, alteredInstances: [] }) : Promise.resolve(null)),
 					},
 					restClientMock,
 				)
@@ -624,9 +619,7 @@ o.spec("CalendarModel", function () {
 			const eventControllerMock = makeEventController()
 
 			fileControllerMock.getAsDataFile = func<FileController["getAsDataFile"]>()
-			when(fileControllerMock.getAsDataFile(matchers.anything())).thenResolve(
-				createDataFile("event.ics", "ical", stringToUtf8Uint8Array("UID: " + uid), "cid"),
-			)
+			when(fileControllerMock.getAsDataFile(matchers.anything())).thenResolve(createDataFile("event.ics", "ical", stringToUtf8Uint8Array("UID: " + uid), "cid"))
 
 			const actuallyErase = restClientMock.erase
 			restClientMock.erase = func<EntityRestClientMock["erase"]>()

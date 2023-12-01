@@ -201,7 +201,8 @@ export function vCardListToContacts(vCardList: string[], ownerGroupId: Id): Cont
 					break
 
 				case "ADR":
-				case "ITEM1.ADR": // necessary for apple vcards
+				case "ITEM1.ADR":
+				// necessary for apple vcards
 
 				case "ITEM2.ADR":
 					// necessary for apple vcards
@@ -216,7 +217,8 @@ export function vCardListToContacts(vCardList: string[], ownerGroupId: Id): Cont
 					break
 
 				case "EMAIL":
-				case "ITEM1.EMAIL": // necessary for apple and protonmail vcards
+				case "ITEM1.EMAIL":
+				// necessary for apple and protonmail vcards
 
 				case "ITEM2.EMAIL":
 					// necessary for apple vcards
@@ -231,7 +233,8 @@ export function vCardListToContacts(vCardList: string[], ownerGroupId: Id): Cont
 					break
 
 				case "TEL":
-				case "ITEM1.TEL": // necessary for apple vcards
+				case "ITEM1.TEL":
+				// necessary for apple vcards
 
 				case "ITEM2.TEL":
 					// necessary for apple vcards
@@ -252,7 +255,8 @@ export function vCardListToContacts(vCardList: string[], ownerGroupId: Id): Cont
 					break
 
 				case "URL":
-				case "ITEM1.URL": // necessary for apple vcards
+				case "ITEM1.URL":
+				// necessary for apple vcards
 
 				case "ITEM2.URL":
 					// necessary for apple vcards

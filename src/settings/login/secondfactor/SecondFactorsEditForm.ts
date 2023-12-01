@@ -52,9 +52,7 @@ export class SecondFactorsEditForm {
 			this.domainConfigProvider.getCurrentDomainConfig().firstPartyDomain
 				? [
 						m("span.small", lang.get("moreInfo_msg") + " "),
-						ifAllowedTutaLinks(locator.logins, InfoLink.SecondFactor, (link) =>
-							m("span.small.text-break", [m(`a[href=${link}][target=_blank]`, link)]),
-						),
+						ifAllowedTutaLinks(locator.logins, InfoLink.SecondFactor, (link) => m("span.small.text-break", [m(`a[href=${link}][target=_blank]`, link)])),
 				  ]
 				: null,
 		]

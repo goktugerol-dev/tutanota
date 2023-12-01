@@ -44,9 +44,7 @@ export class DesktopAlarmScheduler implements NativeAlarmScheduler {
 
 			this.handleDeleteAlarm(an)
 		} else {
-			console.warn(
-				`received AlarmNotification (alarmInfo identifier ${an.alarmInfo.alarmIdentifier}) with unsupported operation ${an.operation}, ignoring`,
-			)
+			console.warn(`received AlarmNotification (alarmInfo identifier ${an.alarmInfo.alarmIdentifier}) with unsupported operation ${an.operation}, ignoring`)
 		}
 	}
 

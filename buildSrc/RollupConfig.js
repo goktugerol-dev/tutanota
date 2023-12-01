@@ -162,13 +162,7 @@ export function getChunkName(moduleId, { getModuleInfo }) {
 		return "ui-extra"
 	} else if (isIn("src/login")) {
 		return "login"
-	} else if (
-		isIn("src/api/common") ||
-		isIn("src/api/entities") ||
-		isIn("src/desktop/config/ConfigKeys") ||
-		moduleId.includes("cborg") ||
-		isIn("src/offline")
-	) {
+	} else if (isIn("src/api/common") || isIn("src/api/entities") || isIn("src/desktop/config/ConfigKeys") || moduleId.includes("cborg") || isIn("src/offline")) {
 		// things that are used in both worker and client
 		// entities could be separate in theory but in practice they are anyway
 		return "common"

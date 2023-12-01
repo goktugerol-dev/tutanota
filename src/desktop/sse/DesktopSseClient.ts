@@ -227,16 +227,17 @@ export class DesktopSseClient {
 
 				res.setEncoding("utf8")
 				let resData = ""
-				res.on("data", (d) => {
-					// add new data to the buffer
-					resData += d
-					const lines = resData.split("\n")
-					resData = lines.pop() ?? "" // put the last line back into the buffer
+				res
+					.on("data", (d) => {
+						// add new data to the buffer
+						resData += d
+						const lines = resData.split("\n")
+						resData = lines.pop() ?? "" // put the last line back into the buffer
 
-					for (const l of lines) {
-						this._processSseData(l, userId)
-					}
-				})
+						for (const l of lines) {
+							this._processSseData(l, userId)
+						}
+					})
 					.on("close", () => {
 						log.debug("sse response closed")
 
@@ -497,9 +498,10 @@ export class DesktopSseClient {
 
 					res.setEncoding("utf8")
 					let resData = ""
-					res.on("data", (chunk) => {
-						resData += chunk
-					})
+					res
+						.on("data", (chunk) => {
+							resData += chunk
+						})
 						.on("end", () => {
 							try {
 								resolve(JSON.parse(resData))

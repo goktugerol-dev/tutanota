@@ -24,11 +24,7 @@ export class BottomNav implements Component<Attrs> {
 				? m(NavButton, {
 						label: "search_label",
 						icon: () => BootIcons.Search,
-						href: m.route.get().startsWith(SEARCH_PREFIX)
-							? m.route.get()
-							: m.route.get().startsWith(CONTACTS_PREFIX)
-							? "/search/contact"
-							: "/search/mail",
+						href: m.route.get().startsWith(SEARCH_PREFIX) ? m.route.get() : m.route.get().startsWith(CONTACTS_PREFIX) ? "/search/contact" : "/search/mail",
 						isSelectedPrefix: SEARCH_PREFIX,
 						vertical: true,
 						fontSize,

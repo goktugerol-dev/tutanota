@@ -197,10 +197,7 @@ export class CalendarMonthView implements Component<CalendarMonthAttrs>, ClassCo
 					{
 						key: week[0].date.getTime(),
 					},
-					[
-						week.map((day, i) => this._renderDay(attrs, day, today, i, weekIndex === 0)),
-						this._monthDom ? this._renderWeekEvents(attrs, week, zone) : null,
-					],
+					[week.map((day, i) => this._renderDay(attrs, day, today, i, weekIndex === 0)), this._monthDom ? this._renderWeekEvents(attrs, week, zone) : null],
 				)
 			}),
 		)
@@ -349,15 +346,7 @@ export class CalendarMonthView implements Component<CalendarMonthAttrs>, ClassCo
 								const eventStart = eventIsAllDay ? getAllDayDateForTimezone(event.startTime, zone) : event.startTime
 								const eventEnd = eventIsAllDay ? incrementDate(getEventEnd(event, zone), -1) : event.endTime
 
-								const position = this._getEventPosition(
-									eventStart,
-									eventEnd,
-									firstDayOfWeek,
-									firstDayOfNextWeek,
-									dayWidth,
-									dayHeight(),
-									columnIndex,
-								)
+								const position = this._getEventPosition(eventStart, eventEnd, firstDayOfWeek, firstDayOfNextWeek, dayWidth, dayHeight(), columnIndex)
 								return this.renderEvent(event, position, eventStart, firstDayOfWeek, firstDayOfNextWeek, eventEnd, attrs)
 							} else {
 								for (const [dayIndex, dayInWeek] of week.entries()) {

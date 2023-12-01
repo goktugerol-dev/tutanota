@@ -321,11 +321,7 @@ export class SearchView extends BaseTopLevelView implements TopLevelView<SearchV
 						loadAll: () => this.searchViewModel.loadAll(),
 						stopLoadAll: () => this.searchViewModel.stopLoadAll(),
 						loadingAll:
-							this.searchViewModel.loadingAllForSearchResult != null
-								? "loading"
-								: this.searchViewModel.listModel?.isLoadedCompletely()
-								? "loaded"
-								: "can_load",
+							this.searchViewModel.loadingAllForSearchResult != null ? "loading" : this.searchViewModel.listModel?.isLoadedCompletely() ? "loaded" : "can_load",
 						getSelectionMessage: (selected: ReadonlyArray<Mail>) => getMailSelectionMessage(selected),
 					}),
 				})
@@ -389,36 +385,36 @@ export class SearchView extends BaseTopLevelView implements TopLevelView<SearchV
 					styles.isSingleColumnLayout() && this.viewSlider.focusedColumn === this.resultDetailsColumn && this.searchViewModel.conversationViewModel
 						? m(MobileMailActionBar, { viewModel: this.searchViewModel.conversationViewModel?.primaryViewModel() })
 						: styles.isSingleColumnLayout() &&
-						  this.searchViewModel.listModel &&
-						  this.searchViewModel.listModel.state.inMultiselect &&
-						  getCurrentSearchMode() === "mail"
-						? m(MobileMailMultiselectionActionBar, {
-								mails: this.searchViewModel.getSelectedMails(),
-								selectNone: () => this.searchViewModel.listModel.selectNone(),
-								mailModel: locator.mailModel,
-						  })
-						: getCurrentSearchMode() === "contact" &&
-						  styles.isSingleColumnLayout() &&
-						  this.viewSlider.focusedColumn === this.resultDetailsColumn &&
-						  !this.searchViewModel.listModel?.state.inMultiselect
-						? m(MobileContactActionBar, {
-								editAction: () => new ContactEditor(locator.entityClient, this.searchViewModel.getSelectedContacts()[0]).show(),
-								deleteAction: () => deleteContacts(this.searchViewModel.getSelectedContacts()),
-						  })
-						: styles.isSingleColumnLayout() &&
-						  this.viewSlider.focusedColumn === this.resultListColumn &&
-						  this.searchViewModel.listModel?.state.inMultiselect
-						? m(
-								MobileBottomActionBar,
-								m(ContactViewerActions, {
-									contacts: this.searchViewModel.getSelectedContacts(),
-									onEdit: () => new ContactEditor(locator.entityClient, getFirstOrThrow(this.searchViewModel.getSelectedContacts())).show(),
-									onDelete: deleteContacts,
-									onMerge: confirmMerge,
-									onExport: exportContacts,
-								}),
-						  )
-						: m(BottomNav),
+							  this.searchViewModel.listModel &&
+							  this.searchViewModel.listModel.state.inMultiselect &&
+							  getCurrentSearchMode() === "mail"
+						  ? m(MobileMailMultiselectionActionBar, {
+									mails: this.searchViewModel.getSelectedMails(),
+									selectNone: () => this.searchViewModel.listModel.selectNone(),
+									mailModel: locator.mailModel,
+							  })
+						  : getCurrentSearchMode() === "contact" &&
+								  styles.isSingleColumnLayout() &&
+								  this.viewSlider.focusedColumn === this.resultDetailsColumn &&
+								  !this.searchViewModel.listModel?.state.inMultiselect
+							  ? m(MobileContactActionBar, {
+										editAction: () => new ContactEditor(locator.entityClient, this.searchViewModel.getSelectedContacts()[0]).show(),
+										deleteAction: () => deleteContacts(this.searchViewModel.getSelectedContacts()),
+								  })
+							  : styles.isSingleColumnLayout() &&
+									  this.viewSlider.focusedColumn === this.resultListColumn &&
+									  this.searchViewModel.listModel?.state.inMultiselect
+								  ? m(
+											MobileBottomActionBar,
+											m(ContactViewerActions, {
+												contacts: this.searchViewModel.getSelectedContacts(),
+												onEdit: () => new ContactEditor(locator.entityClient, getFirstOrThrow(this.searchViewModel.getSelectedContacts())).show(),
+												onDelete: deleteContacts,
+												onMerge: confirmMerge,
+												onExport: exportContacts,
+											}),
+									  )
+								  : m(BottomNav),
 			}),
 		)
 	}
@@ -512,16 +508,16 @@ export class SearchView extends BaseTopLevelView implements TopLevelView<SearchV
 						icon: Icons.PencilSquare,
 				  })
 				: isSameTypeRef(restriction.type, ContactTypeRef)
-				? m(IconButton, {
-						click: () => {
-							locator.contactModel.getContactListId().then((contactListId) => {
-								new ContactEditor(locator.entityClient, null, assertNotNull(contactListId)).show()
-							})
-						},
-						title: "newContact_action",
-						icon: Icons.Add,
-				  })
-				: null
+				  ? m(IconButton, {
+							click: () => {
+								locator.contactModel.getContactListId().then((contactListId) => {
+									new ContactEditor(locator.entityClient, null, assertNotNull(contactListId)).show()
+								})
+							},
+							title: "newContact_action",
+							icon: Icons.Add,
+					  })
+				  : null
 			: null
 	}
 

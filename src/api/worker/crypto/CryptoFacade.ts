@@ -250,10 +250,7 @@ export class CryptoFacade {
 	private trySymmetricPermission(listPermissions: Permission[]) {
 		const symmetricPermission: Permission | null =
 			listPermissions.find(
-				(p) =>
-					(p.type === PermissionType.Public_Symmetric || p.type === PermissionType.Symmetric) &&
-					p._ownerGroup &&
-					this.userFacade.hasGroup(p._ownerGroup),
+				(p) => (p.type === PermissionType.Public_Symmetric || p.type === PermissionType.Symmetric) && p._ownerGroup && this.userFacade.hasGroup(p._ownerGroup),
 			) ?? null
 
 		if (symmetricPermission) {
@@ -324,11 +321,7 @@ export class CryptoFacade {
 		return { resolvedSessionKeyForInstance, instanceSessionKeys }
 	}
 
-	private async resolveWithPublicOrExternalPermission(
-		listPermissions: Permission[],
-		instance: Record<string, any>,
-		typeModel: TypeModel,
-	): Promise<Aes128Key> {
+	private async resolveWithPublicOrExternalPermission(listPermissions: Permission[], instance: Record<string, any>, typeModel: TypeModel): Promise<Aes128Key> {
 		const pubOrExtPermission = listPermissions.find((p) => p.type === PermissionType.Public || p.type === PermissionType.External) ?? null
 
 		if (pubOrExtPermission == null) {
@@ -448,9 +441,7 @@ export class CryptoFacade {
 					throw e
 				}
 
-				return this.rsa
-					.decrypt(privKey, base64ToUint8Array(instance._ownerPublicEncSessionKey))
-					.then((decryptedBytes) => uint8ArrayToBitArray(decryptedBytes))
+				return this.rsa.decrypt(privKey, base64ToUint8Array(instance._ownerPublicEncSessionKey)).then((decryptedBytes) => uint8ArrayToBitArray(decryptedBytes))
 			})
 		}
 

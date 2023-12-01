@@ -86,18 +86,11 @@ export class MultiDayCalendarView implements Component<Attrs> {
 	view({ attrs }: Vnode<Attrs>): Children {
 		// Special case for week view
 
-		const startOfThisPeriod =
-			attrs.daysInPeriod === 7 ? getStartOfWeek(attrs.selectedDate, getStartOfTheWeekOffset(attrs.startOfTheWeek)) : attrs.selectedDate
+		const startOfThisPeriod = attrs.daysInPeriod === 7 ? getStartOfWeek(attrs.selectedDate, getStartOfTheWeekOffset(attrs.startOfTheWeek)) : attrs.selectedDate
 		const startOfPreviousPeriod = incrementDate(new Date(startOfThisPeriod), -attrs.daysInPeriod)
 		const startOfNextPeriod = incrementDate(new Date(startOfThisPeriod), attrs.daysInPeriod)
 
-		const previousPageEvents = this.getEventsForWeek(
-			attrs.startOfTheWeek,
-			attrs.selectedDate,
-			attrs.getEventsOnDays,
-			attrs.daysInPeriod,
-			startOfPreviousPeriod,
-		)
+		const previousPageEvents = this.getEventsForWeek(attrs.startOfTheWeek, attrs.selectedDate, attrs.getEventsOnDays, attrs.daysInPeriod, startOfPreviousPeriod)
 		const currentPageEvents = this.getEventsForWeek(attrs.startOfTheWeek, attrs.selectedDate, attrs.getEventsOnDays, attrs.daysInPeriod, startOfThisPeriod)
 		const nextPageEvents = this.getEventsForWeek(attrs.startOfTheWeek, attrs.selectedDate, attrs.getEventsOnDays, attrs.daysInPeriod, startOfNextPeriod)
 		const weekEvents = this.getEventsForWeek(attrs.startOfTheWeek, attrs.selectedDate, attrs.getEventsOnDays, 7)
@@ -105,12 +98,7 @@ export class MultiDayCalendarView implements Component<Attrs> {
 		return m(".flex.col.fill-absolute", [
 			this.renderDateSelector(attrs),
 			!styles.isDesktopLayout()
-				? this.renderHeaderMobile(
-						attrs.daysInPeriod === 1 ? currentPageEvents : weekEvents,
-						attrs.groupColors,
-						attrs.onEventClicked,
-						attrs.temporaryEvents,
-				  )
+				? this.renderHeaderMobile(attrs.daysInPeriod === 1 ? currentPageEvents : weekEvents, attrs.groupColors, attrs.onEventClicked, attrs.temporaryEvents)
 				: null,
 			m(
 				".rel.flex-grow",

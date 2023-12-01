@@ -132,13 +132,7 @@ import("./translations/en")
 			const { CachePostLoginAction } = await import("./offline/CachePostLoginAction")
 			locator.logins.addPostLoginAction(
 				async () =>
-					new CachePostLoginAction(
-						await locator.calendarModel(),
-						locator.entityClient,
-						locator.progressTracker,
-						locator.cacheStorage,
-						locator.logins,
-					),
+					new CachePostLoginAction(await locator.calendarModel(), locator.entityClient, locator.progressTracker, locator.cacheStorage, locator.logins),
 			)
 		}
 
@@ -187,12 +181,13 @@ import("./translations/en")
 						const domainConfig = isBrowser()
 							? locator.domainConfigProvider().getDomainConfigForHostname(location.hostname, location.protocol, location.port)
 							: // in this case, we know that we have a staticUrl set that we need to use
-							  locator.domainConfigProvider().getCurrentDomainConfig()
+							  locator
+									.domainConfigProvider()
+									.getCurrentDomainConfig()
 						return {
 							component: LoginView,
 							cache: {
-								makeViewModel: () =>
-									new LoginViewModel(locator.logins, locator.credentialsProvider, locator.secondFactorHandler, deviceConfig, domainConfig),
+								makeViewModel: () => new LoginViewModel(locator.logins, locator.credentialsProvider, locator.secondFactorHandler, deviceConfig, domainConfig),
 							},
 						}
 					},
@@ -209,8 +204,7 @@ import("./translations/en")
 						return {
 							component: TerminationView,
 							cache: {
-								makeViewModel: () =>
-									new TerminationViewModel(locator.logins, locator.secondFactorHandler, locator.serviceExecutor, locator.entityClient),
+								makeViewModel: () => new TerminationViewModel(locator.logins, locator.secondFactorHandler, locator.serviceExecutor, locator.entityClient),
 								header: await locator.appHeaderAttrs(),
 							},
 						}

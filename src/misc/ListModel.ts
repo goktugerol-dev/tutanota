@@ -284,9 +284,7 @@ export class ListModel<ElementType extends ListElement> {
 					!this.rawState.inMultiselect
 				) {
 					newActiveElement =
-						entity === last(this.state.items)
-							? this.state.items[this.state.items.length - 2]
-							: this.state.items[this.state.items.indexOf(entity) + 1]
+						entity === last(this.state.items) ? this.state.items[this.state.items.length - 2] : this.state.items[this.state.items.indexOf(entity) + 1]
 
 					selectedItems.add(newActiveElement)
 				}
@@ -450,8 +448,8 @@ export class ListModel<ElementType extends ListElement> {
 			oldActiveItem == null
 				? first(this.state.items)
 				: lastItem && this.config.sortCompare(lastItem, oldActiveItem) <= 0
-				? lastItem
-				: this.state.items.find((el) => this.config.sortCompare(el, oldActiveItem) > 0) ?? first(this.state.items)
+				  ? lastItem
+				  : this.state.items.find((el) => this.config.sortCompare(el, oldActiveItem) > 0) ?? first(this.state.items)
 
 		if (newActiveItem != null) {
 			if (!multiselect) {
