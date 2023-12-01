@@ -31,8 +31,6 @@ import {GiftCardGetReturnTypeRef} from "./TypeRefs.js"
 import {GiftCardCreateDataTypeRef} from "./TypeRefs.js"
 import {GiftCardCreateReturnTypeRef} from "./TypeRefs.js"
 import {GiftCardDeleteDataTypeRef} from "./TypeRefs.js"
-import {InvoiceNumberToInvoicePostTypeRef} from "./TypeRefs.js"
-import {InvoiceNumberToInvoiceReturnTypeRef} from "./TypeRefs.js"
 import {LocationServiceGetReturnTypeRef} from "./TypeRefs.js"
 import {MailAddressAliasGetInTypeRef} from "./TypeRefs.js"
 import {MailAddressAliasServiceReturnTypeRef} from "./TypeRefs.js"
@@ -63,6 +61,8 @@ import {RegistrationCaptchaServiceReturnTypeRef} from "./TypeRefs.js"
 import {RegistrationCaptchaServiceDataTypeRef} from "./TypeRefs.js"
 import {RegistrationServiceDataTypeRef} from "./TypeRefs.js"
 import {RegistrationReturnTypeRef} from "./TypeRefs.js"
+import {RenderInvoiceGetInTypeRef} from "./TypeRefs.js"
+import {RenderInvoiceGetOutTypeRef} from "./TypeRefs.js"
 import {ResetFactorsDeleteDataTypeRef} from "./TypeRefs.js"
 import {ResetPasswordDataTypeRef} from "./TypeRefs.js"
 import {SaltDataTypeRef} from "./TypeRefs.js"
@@ -244,15 +244,6 @@ export const GiftCardService = Object.freeze({
 	delete: {data: GiftCardDeleteDataTypeRef, return: null},
 } as const)
 
-export const InvoiceNumberToInvoiceService = Object.freeze({
-	app: "sys",
-	name: "InvoiceNumberToInvoiceService",
-	get: null,
-	post: {data: InvoiceNumberToInvoicePostTypeRef, return: InvoiceNumberToInvoiceReturnTypeRef},
-	put: null,
-	delete: null,
-} as const)
-
 export const LocationService = Object.freeze({
 	app: "sys",
 	name: "LocationService",
@@ -366,6 +357,15 @@ export const RegistrationService = Object.freeze({
 	name: "RegistrationService",
 	get: {data: null, return: RegistrationServiceDataTypeRef},
 	post: {data: RegistrationServiceDataTypeRef, return: RegistrationReturnTypeRef},
+	put: null,
+	delete: null,
+} as const)
+
+export const RenderInvoiceService = Object.freeze({
+	app: "sys",
+	name: "RenderInvoiceService",
+	get: {data: RenderInvoiceGetInTypeRef, return: RenderInvoiceGetOutTypeRef},
+	post: null,
 	put: null,
 	delete: null,
 } as const)

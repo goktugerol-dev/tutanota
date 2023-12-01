@@ -14,15 +14,14 @@ import {
 	createCreateCustomerServerPropertiesData,
 	createCustomDomainData,
 	createEmailSenderListElement,
-	createInvoiceNumberToInvoicePost,
 	createMembershipAddData,
 	createMembershipRemoveData,
 	createPaymentDataServicePutData,
 	createPdfInvoiceServiceData,
+	createRenderInvoiceGetIn,
 	CustomerInfoTypeRef,
 	CustomerServerPropertiesTypeRef,
 	CustomerTypeRef,
-	InvoiceTypeRef,
 } from "../../../entities/sys/TypeRefs.js"
 import { assertWorkerOrNode } from "../../../common/Env.js"
 import type { Hex } from "@tutao/tutanota-utils"
@@ -33,10 +32,10 @@ import {
 	BrandingDomainService,
 	CreateCustomerServerProperties,
 	CustomDomainService,
-	InvoiceNumberToInvoiceService,
 	MembershipService,
 	PaymentDataService,
 	PdfInvoiceService,
+	RenderInvoiceService,
 	SystemKeysService,
 } from "../../../entities/sys/Services.js"
 import { createCustomerAccountCreateData } from "../../../entities/tutanota/TypeRefs.js"
@@ -58,6 +57,7 @@ import { UserFacade } from "../UserFacade.js"
 import { PaymentInterval } from "../../../../subscription/PriceUtils.js"
 import { ExposedOperationProgressTracker, OperationId } from "../../../main/OperationProgressTracker.js"
 import { formatNameAndAddress } from "../../../common/utils/CommonFormatter.js"
+import { PdfWriter } from "../../../../misc/pdf/PdfWriter.js"
 
 assertWorkerOrNode()
 
@@ -400,13 +400,12 @@ export class CustomerFacade {
 
 	async downloadInvoice(invoiceNumber: string): Promise<DataFile> {
 		// Don't download, but generate => Need invoice info which can be gotten somewhere
+		const b = await this.serviceExecutor.get(RenderInvoiceService, createRenderInvoiceGetIn({ invoiceNumber }))
+		console.log("meow")
+		console.log(b)
 
-		const a = await this.serviceExecutor.post(InvoiceNumberToInvoiceService, createInvoiceNumberToInvoicePost({ number: invoiceNumber }))
-		const invoiceid = a.invoice
-
-		const invoice = await this.entityClient.load(InvoiceTypeRef, invoiceid)
-
-		console.log(invoice)
+		var a = new PdfWriter(new TextEncoder())
+		a.writePdf()
 
 		const data = createPdfInvoiceServiceData({
 			invoiceNumber,

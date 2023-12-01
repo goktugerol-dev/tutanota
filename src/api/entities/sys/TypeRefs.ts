@@ -2416,6 +2416,58 @@ export type RejectedSendersRef = {
 
 	items: Id;
 }
+export const RenderInvoiceGetInTypeRef: TypeRef<RenderInvoiceGetIn> = new TypeRef("sys", "RenderInvoiceGetIn")
+
+export function createRenderInvoiceGetIn(values?: Partial<RenderInvoiceGetIn>): RenderInvoiceGetIn {
+	return Object.assign(create(typeModels.RenderInvoiceGetIn, RenderInvoiceGetInTypeRef), values)
+}
+
+export type RenderInvoiceGetIn = {
+	_type: TypeRef<RenderInvoiceGetIn>;
+
+	invoiceNumber: string;
+}
+export const RenderInvoiceGetOutTypeRef: TypeRef<RenderInvoiceGetOut> = new TypeRef("sys", "RenderInvoiceGetOut")
+
+export function createRenderInvoiceGetOut(values?: Partial<RenderInvoiceGetOut>): RenderInvoiceGetOut {
+	return Object.assign(create(typeModels.RenderInvoiceGetOut, RenderInvoiceGetOutTypeRef), values)
+}
+
+export type RenderInvoiceGetOut = {
+	_type: TypeRef<RenderInvoiceGetOut>;
+
+	_format: NumberString;
+	address: string;
+	country: string;
+	date: Date;
+	grandTotal: NumberString;
+	invoiceId: Id;
+	paymentMethod: NumberString;
+	subTotal: NumberString;
+	type: NumberString;
+	vat: NumberString;
+	vatIdNumber: null | string;
+	vatRate: NumberString;
+
+	items: RenderInvoiceItem[];
+}
+export const RenderInvoiceItemTypeRef: TypeRef<RenderInvoiceItem> = new TypeRef("sys", "RenderInvoiceItem")
+
+export function createRenderInvoiceItem(values?: Partial<RenderInvoiceItem>): RenderInvoiceItem {
+	return Object.assign(create(typeModels.RenderInvoiceItem, RenderInvoiceItemTypeRef), values)
+}
+
+export type RenderInvoiceItem = {
+	_type: TypeRef<RenderInvoiceItem>;
+
+	_id: Id;
+	amount: NumberString;
+	endDate: null | Date;
+	singlePrice: null | NumberString;
+	startDate: null | Date;
+	totalPrice: NumberString;
+	type: NumberString;
+}
 export const RepeatRuleTypeRef: TypeRef<RepeatRule> = new TypeRef("sys", "RepeatRule")
 
 export function createRepeatRule(values?: Partial<RepeatRule>): RepeatRule {
