@@ -2,7 +2,7 @@ import { assertMainOrNodeBoot } from "../api/common/Env"
 
 assertMainOrNodeBoot()
 
-export const enum ErrorReportClientType {
+export enum ErrorReportClientType {
 	Browser = "0",
 	Android = "1",
 	Ios = "2",
