@@ -1500,6 +1500,7 @@ export default {
 		"transferCredentials_msg": "You can now transfer your Tuta credentials to the new login page:",
 		"trash_action": "Trash",
 		"tutanotaAddressDoesNotExist_msg": "The following Tuta email addresses do not exist.",
+		"tutaTeam_label": "Tuta Team",
 		"tutanotaToTuta_msg": "Tutanota is now Tuta",
 		"tutaoInfo_msg": "Tutao GmbH is the company providing Tuta to you.",
 		"twitter_label": "Twitter",

@@ -20,6 +20,7 @@ import {
 import { px, size } from "../../gui/size.js"
 import { NBSP, noOp } from "@tutao/tutanota-utils"
 import { VirtualRow } from "../../gui/base/ListUtils.js"
+import { lang } from "../../misc/LanguageViewModel.js"
 
 const iconMap: Record<MailFolderType, string> = {
 	[MailFolderType.CUSTOM]: FontIcons.Folder,
@@ -224,7 +225,7 @@ export class MailRow implements VirtualRow<Mail> {
 									classes: ".small.mr-s",
 									oncreate: (vnode) => (this.teamLabelDom = vnode.dom as HTMLElement),
 								},
-								"Tuta Team",
+								lang.get("tutaTeam_label"),
 							),
 							m(".text-ellipsis", {
 								oncreate: (vnode) => (this.senderDom = vnode.dom as HTMLElement),

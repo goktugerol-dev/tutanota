@@ -1484,6 +1484,7 @@ export type TranslationKeyType =
 	| "transferCredentials_msg"
 	| "trash_action"
 	| "tutanotaAddressDoesNotExist_msg"
+	| "tutaTeam_label"
 	| "tutanotaToTuta_msg"
 	| "tutaoInfo_msg"
 	| "twitter_label"
